@@ -1,6 +1,6 @@
 ## TL;DR
 
-Backend Engineer in Japan. *****Full-stuck** Engineer.
+Backend Engineer in Japan. **Full-stuck** Engineer.
 
 ## Skills
 
