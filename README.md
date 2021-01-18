@@ -1,3 +1,5 @@
+![GitHub Stats Card](https://github-readme-stats.vercel.app/api?username=paveg&count_private=true&show_icons=true)
+
 ## TL;DR
 
 Backend Engineer in Japan. **Full-stuck** Engineer.
