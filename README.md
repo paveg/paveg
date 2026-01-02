@@ -1,24 +1,9 @@
-![GitHub Stats Card](https://github-readme-stats.vercel.app/api?username=paveg&count_private=true&show_icons=true&theme=tokyonight)
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=paveg&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
+![paveg's GitHub Stats](https://devcard.pavegy.workers.dev/api?username=paveg&theme=github_dark&show_icons=true&hide_rank=true&custom_title=GitHub+Stats)
+![paveg's Top Languages](https://devcard.pavegy.workers.dev/api/top-langs?username=paveg&theme=github_dark&layout=default)
 
 ## TL;DR
 
-Backend Engineer in Japan. **Full-stuck** Engineer.
+Software Engineer in Japan.
+Most of all my experiences are related to SaaS, web development.
 
-## Skills
-
-- Ruby, Go, TypeScript, JavaScript
-- MySQL, PostgreSQL
-- K8s, Docker
-- CircleCI, GitHub Actions, Azure Pipelines
-- API design
-
-## Career
-
-- SIer (2015) Network Engineer
-- ACALL (2018.08-2019.04) Software Engineer
-
-### Current
-
-- freee K.K. (2015.11-) Sotfware Engineer
-
+If you interested in it, see [more details](https://www.funailog.com/portfolio/).
