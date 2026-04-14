@@ -11,7 +11,7 @@ Production hardening for Hono apps — standard error contracts, safe retries, a
 | [**hono-problem-details**](https://github.com/paveg/hono-problem-details) | RFC 9457 `application/problem+json` error responses | [![npm](https://img.shields.io/npm/dw/hono-problem-details?label=%20&color=informational)](https://www.npmjs.com/package/hono-problem-details) |
 | [**hono-idempotency**](https://github.com/paveg/hono-idempotency) | Stripe-style `Idempotency-Key` middleware with KV / D1 / Memory stores | [![npm](https://img.shields.io/npm/dw/hono-idempotency?label=%20&color=informational)](https://www.npmjs.com/package/hono-idempotency) |
 | [**hono-webhook-verify**](https://github.com/paveg/hono-webhook-verify) | Webhook signature verification (Stripe, GitHub, Slack, Shopify, Twilio, Standard Webhooks) | [![npm](https://img.shields.io/npm/dw/hono-webhook-verify?label=%20&color=informational)](https://www.npmjs.com/package/hono-webhook-verify) |
-| [**hono-cf-access**](https://github.com/paveg/hono-cf-access) | Access control leveraging Cloudflare Workers `request.cf` properties (geo, ASN, bot score) | [![npm](https://img.shields.io/npm/dw/hono-cf-access?label=%20&color=informational)](https://www.npmjs.com/package/hono-cf-access) |
+| [**hono-cf-access**](https://github.com/paveg/hono-cf-access) | Country / ASN blocking and maintenance mode via Cloudflare Workers `request.cf` | [![npm](https://img.shields.io/npm/dw/hono-cf-access?label=%20&color=informational)](https://www.npmjs.com/package/hono-cf-access) |
 
 ## Stats
 
