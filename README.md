@@ -6,6 +6,8 @@ Software Engineer in Japan. Building production-grade middleware for **[Hono](ht
 
 Production hardening for Hono apps — standard error contracts, safe retries, and webhook verification.
 
+If you find these useful, starring the repos helps others discover them. Issues and PRs welcome.
+
 | Package | What it does | Downloads |
 | --- | --- | --- |
 | [**hono-problem-details**](https://github.com/paveg/hono-problem-details) | RFC 9457 `application/problem+json` error responses | [![npm](https://img.shields.io/npm/dw/hono-problem-details?label=%20&color=informational)](https://www.npmjs.com/package/hono-problem-details) |
