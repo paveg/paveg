@@ -13,6 +13,7 @@ If you find these useful, starring the repos helps others discover them. Issues 
 | [**hono-problem-details**](https://github.com/paveg/hono-problem-details) | RFC 9457 `application/problem+json` error responses | [![npm](https://img.shields.io/npm/dw/hono-problem-details?label=%20&color=informational)](https://www.npmjs.com/package/hono-problem-details) |
 | [**hono-idempotency**](https://github.com/paveg/hono-idempotency) | Stripe-style `Idempotency-Key` middleware with KV / D1 / Memory stores | [![npm](https://img.shields.io/npm/dw/hono-idempotency?label=%20&color=informational)](https://www.npmjs.com/package/hono-idempotency) |
 | [**hono-webhook-verify**](https://github.com/paveg/hono-webhook-verify) | Webhook signature verification (Stripe, GitHub, Slack, Shopify, Twilio, Standard Webhooks) | [![npm](https://img.shields.io/npm/dw/hono-webhook-verify?label=%20&color=informational)](https://www.npmjs.com/package/hono-webhook-verify) |
+| [**hono-dpop**](https://github.com/paveg/hono-dpop) | DPoP (RFC 9449) proof-of-possession verification (Memory / Redis / Cloudflare KV / D1 / Durable Objects stores) | [![npm](https://img.shields.io/npm/dw/hono-dpop?label=%20&color=informational)](https://www.npmjs.com/package/hono-dpop) |
 | [**hono-cf-access**](https://github.com/paveg/hono-cf-access) | Country / ASN blocking and maintenance mode via Cloudflare Workers `request.cf` | [![npm](https://img.shields.io/npm/dw/hono-cf-access?label=%20&color=informational)](https://www.npmjs.com/package/hono-cf-access) |
 
 ## Stats
