@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="164" viewBox="0 0 420 164" role="img" aria-labelledby="title">
+<title id="title">hono-dpop: DPoP (RFC 9449) proof-of-possession. 1 GitHub stars, 66 npm downloads in the last 30 days, TypeScript, MIT license</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #1C2733; }
+  .name { font-size: 16px; font-weight: 700; fill: #2E6BD6; }
+  .description { font-size: 12.5px; fill: #5B6B7C; }
+  .meta { font-size: 12px; fill: #5B6B7C; font-variant-numeric: tabular-nums; }
+  .meta tspan.value { fill: #1C2733; font-weight: 600; }
+  .stars { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .star { fill: #B07200; transform-box: fill-box; transform-origin: center; animation: pop 600ms cubic-bezier(.34, 1.56, .64, 1) 1500ms both; }
+  .line { fill: none; stroke: #2E6BD6; stroke-width: 1.75; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1400ms cubic-bezier(.65, 0, .35, 1) 200ms forwards; }
+  .area { fill: #2E6BD6; opacity: 0; animation: fade 600ms ease-out 1300ms forwards; }
+  .rule { stroke: #DCE2E9; stroke-width: 1; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: .12; } }
+  @keyframes pop { 0% { transform: scale(.4) rotate(-30deg); } 100% { transform: scale(1) rotate(0); } }
+  @media (prefers-reduced-motion: reduce) { .line { animation: none; stroke-dashoffset: 0; } .area { animation: none; opacity: .12; } .star { animation: none; } }
+</style>
+<rect x="0.5" y="0.5" width="419" height="163" rx="12" fill="#FBFCFD" stroke="#DCE2E9"/>
+<text x="20" y="34" class="name">hono-dpop</text>
+<g transform="translate(370.5 21)"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" class="star"/></g>
+<text x="400" y="34" text-anchor="end" class="stars">1</text>
+<text x="20" y="56" class="description">DPoP (RFC 9449) proof-of-possession</text>
+<path d="M20.0 116.0 L33.1 116.0 L46.2 105.5 L59.3 116.0 L72.4 84.5 L85.5 110.8 L98.6 116.0 L111.7 105.5 L124.8 110.8 L137.9 100.3 L151.0 116.0 L164.1 110.8 L177.2 74.0 L190.3 105.5 L203.4 79.3 L216.6 116.0 L229.7 84.5 L242.8 84.5 L255.9 110.8 L269.0 105.5 L282.1 100.3 L295.2 105.5 L308.3 95.0 L321.4 116.0 L334.5 110.8 L347.6 105.5 L360.7 105.5 L373.8 100.3 L386.9 116.0 L400.0 110.8 L400 116 L20 116 Z" class="area"/>
+<path d="M20.0 116.0 L33.1 116.0 L46.2 105.5 L59.3 116.0 L72.4 84.5 L85.5 110.8 L98.6 116.0 L111.7 105.5 L124.8 110.8 L137.9 100.3 L151.0 116.0 L164.1 110.8 L177.2 74.0 L190.3 105.5 L203.4 79.3 L216.6 116.0 L229.7 84.5 L242.8 84.5 L255.9 110.8 L269.0 105.5 L282.1 100.3 L295.2 105.5 L308.3 95.0 L321.4 116.0 L334.5 110.8 L347.6 105.5 L360.7 105.5 L373.8 100.3 L386.9 116.0 L400.0 110.8" class="line" pathLength="1"/>
+<line x1="20" y1="116" x2="400" y2="116" class="rule"/>
+<circle cx="25" cy="140" r="5" fill="#3178C6"/>
+<text x="36" y="144" class="meta">TypeScript</text>
+<text x="122" y="144" class="meta">MIT</text>
+<text x="400" y="144" text-anchor="end" class="meta"><tspan class="value">66</tspan> downloads / 30 days</text>
+</svg>
