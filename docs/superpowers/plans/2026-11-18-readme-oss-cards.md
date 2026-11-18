@@ -12,7 +12,7 @@
 
 取得が1つでも失敗したら何も書かずに終了コード1で止まります。GitHub Actionsは、`assets/`に差分があるときだけコミットします。
 
-**Tech Stack:** Node 26（ローカルと同じ）、TypeScript（ESM、型除去で実行）、パッケージマネージャーはpnpm、テストは`node:test`、GitHub Actions（`actions/checkout` v7.0.1、`pnpm/action-setup` v6.1.1、`actions/setup-node` v7.1.0をSHAで固定）
+**Tech Stack:** Node 26（ローカルと同じ）、TypeScript（ESM、型除去で実行）、パッケージマネージャーはpnpm、テストは`node:test`、GitHub Actions（`actions/checkout` v7.0.1、`pnpm/action-setup` v6.1.1、`actions/setup-node` v7.1.0、`actions/upload-artifact` v7.0.2、`actions/download-artifact` v8.0.2をSHAで固定）
 
 **Spec:** `docs/superpowers/specs/2026-11-18-readme-svg-design.md`
 
@@ -155,16 +155,20 @@ package.json                  name・private・"type": "module"、packageManager
     3. `writeCards`
   - 直接実行したとき（`import.meta.url`が`process.argv[1]`と一致）は、`main({ fetchImpl: fetch, token: process.env.GITHUB_TOKEN, rootDir: process.cwd() })`を呼ぶ。例外のときはメッセージを出して終了コード1
 - [ ] **Step 4: ワークフローを書く** `.github/workflows/update-svgs.yml`
-  - `on`: `schedule: [{ cron: "0 18 * * *" }]`と`workflow_dispatch`
-  - `permissions: contents: write`、`concurrency: update-svgs`
-  - ステップ
-    - checkout
+  - `on`: `schedule: [{ cron: '0 18 * * *' }]`と`workflow_dispatch`
+  - ワークフロー全体は`permissions: {}`と`concurrency: update-svgs`。各ジョブが必要な権限だけを宣言する
+  - `generate`ジョブ（`permissions: contents: read`）
+    - checkout（`persist-credentials: false`）
     - pnpm/action-setup
-    - setup-node（`node-version: 26`、`cache: pnpm`）
+    - setup-node（`node-version: 26`、`cache: pnpm`、`token: ''`で`github.token`を渡さない）
     - `pnpm install --frozen-lockfile`
     - `pnpm run check`
-    - `pnpm run generate`（`env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`）
-    - `git add assets`のあと、`git diff --cached --quiet`が成功（差分なし）ならpushせずに終わる。差分があれば`github-actions[bot]`の名前（`41898283+github-actions[bot]@users.noreply.github.com`）で`chore: update README SVGs`をコミットしてpushする
+    - `pnpm run generate`（`env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`。読み取り専用のトークン）
+    - `actions/upload-artifact`で`assets/oss`を渡す（`if-no-files-found: error`、`retention-days: 1`）
+  - `commit`ジョブ（`needs: generate`、`permissions: contents: write`）。pnpmもNodeも入れず、依存のインストールも、リポジトリのコードの実行もしない
+    - checkout（`persist-credentials: false`）
+    - `actions/download-artifact`で`assets/oss`に取り出す
+    - `git add assets`のあと、`git diff --cached --quiet`が成功（差分なし）ならpushせずに終わる。差分があれば`github-actions[bot]`の名前（`41898283+github-actions[bot]@users.noreply.github.com`）で`chore: update README SVGs`をコミットし、stepの`env`で渡した`GITHUB_TOKEN`を`git -c http.https://github.com/.extraheader=...`のpushにだけ使う
   - アクションはSHAで固定する。SHAは`gh api repos/actions/checkout/git/ref/tags/v7.0.1 --jq .object.sha`のように取り、`# v7.0.1`をコメントに残す。tagが注釈付きタグのときは、`git/tags/<sha>`を引いてコミットのSHAにする
 - [ ] **Step 5: 実データで生成する** Run: `GITHUB_TOKEN=$(gh auth token) pnpm run generate && ls assets/oss | wc -l && for f in assets/oss/*.svg; do xmllint --noout "$f"; done` Expected: `10`、xmllintのエラーなし
 - [ ] **Step 6: コミット** `git commit -m "feat: OSSカードを毎日生成するワークフローを追加する"`（`assets/oss/`も含める）
