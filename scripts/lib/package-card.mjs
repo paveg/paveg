@@ -3,9 +3,12 @@ import { THEMES, FONT, escapeXml, compactNumber } from './svg.mjs';
 const LANGUAGE_COLORS = { TypeScript: '#3178C6' };
 const STAR_PATH = 'M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z';
 
+export const CARD_WIDTH = 380;
+export const CARD_PAD = 20;
+
 export function renderPackageCard(card, theme) {
   const c = THEMES[theme];
-  const width = 420, height = 164, pad = 20;
+  const width = CARD_WIDTH, height = 164, pad = CARD_PAD;
   const chartTop = 74, chartBottom = 116, chartLeft = pad, chartRight = width - pad;
   const peak = Math.max(...card.downloads, 1);
   const lastIndex = Math.max(card.downloads.length - 1, 1);
