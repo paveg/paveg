@@ -12,7 +12,18 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
 
 const isDownloadEntry = (value: unknown): value is DownloadEntry =>
-  isRecord(value) && typeof value.day === 'string' && typeof value.downloads === 'number';
+  isRecord(value) &&
+  typeof value.day === 'string' &&
+  Number.isSafeInteger(value.downloads) &&
+  (value.downloads as number) >= 0;
+
+async function readJson(response: Response, source: string): Promise<unknown> {
+  try {
+    return await response.json();
+  } catch {
+    throw new Error(`${source}: invalid JSON`);
+  }
+}
 
 export function loadPackages(json: unknown): PackageConfig[] {
   if (!Array.isArray(json)) throw new Error('packages config must be an array');
@@ -38,7 +49,7 @@ export async function fetchDownloads(
 ): Promise<number[]> {
   const response = await fetchImpl(`https://api.npmjs.org/downloads/range/last-month/${name}`);
   if (!response.ok) throw new Error(`npm downloads for ${name}: HTTP ${response.status}`);
-  const body: unknown = await response.json();
+  const body = await readJson(response, `npm downloads for ${name}`);
   const entries: unknown = isRecord(body) ? body.downloads : undefined;
   if (!Array.isArray(entries))
     throw new Error(`npm downloads for ${name}: downloads is not an array`);
@@ -57,7 +68,7 @@ export async function fetchRepoMeta(
   if (token) headers.Authorization = `Bearer ${token}`;
   const response = await fetchImpl(`https://api.github.com/repos/paveg/${repo}`, { headers });
   if (!response.ok) throw new Error(`GitHub repo paveg/${repo}: HTTP ${response.status}`);
-  const body: unknown = await response.json();
+  const body = await readJson(response, `GitHub repo paveg/${repo}`);
   const repoBody: Record<string, unknown> = isRecord(body) ? body : {};
   const stars = repoBody.stargazers_count;
   if (typeof stars !== 'number' || !Number.isInteger(stars) || stars < 0) {

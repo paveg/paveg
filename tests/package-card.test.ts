@@ -62,6 +62,23 @@ test('null language and license render no dot and no "null"', () => {
   assert.ok(!svg.includes('null'));
 });
 
+test('prototype keys are not language colors', () => {
+  for (const language of ['constructor', '__proto__', 'toString']) {
+    const svg = renderPackageCard({ ...card, language }, 'light');
+    assert.ok(!svg.includes('<circle'), language);
+    assert.ok(!svg.includes('function'), language);
+    assert.ok(!svg.includes('[object'), language);
+    assert.ok(svg.includes(`>${language}<`), language);
+  }
+});
+
+test('XML-illegal characters never reach the rendered card', () => {
+  const svg = renderPackageCard({ ...card, language: '\u0001Type\u0008Script' }, 'light');
+  assert.ok(svg.includes('>TypeScript<'));
+  assert.ok(!svg.includes('\u0001'));
+  assert.ok(!svg.includes('\u0008'));
+});
+
 test('star sits left of the compacted star count', () => {
   const svg = renderPackageCard({ ...card, stars: 1234 }, 'light');
   assert.ok(svg.includes('>1.2k<'));

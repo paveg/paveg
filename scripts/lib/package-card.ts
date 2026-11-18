@@ -44,7 +44,10 @@ export function renderPackageCard(card: PackageCard, theme: Theme): string {
     .filter(Boolean)
     .map((part) => `, ${part}`)
     .join('');
-  const languageColor = card.language ? LANGUAGE_COLORS[card.language] : undefined;
+  const languageColor =
+    card.language && Object.hasOwn(LANGUAGE_COLORS, card.language)
+      ? LANGUAGE_COLORS[card.language]
+      : undefined;
   const languageDot = languageColor
     ? `<circle cx="${pad + 5}" cy="${footerY - 4}" r="5" fill="${languageColor}"/>\n`
     : '';

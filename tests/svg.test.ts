@@ -15,3 +15,11 @@ test('compactNumber abbreviates thousands', () => {
 test('escapeXml escapes ampersand and angle brackets', () => {
   assert.equal(escapeXml('a & <b>'), 'a &amp; &lt;b&gt;');
 });
+
+test('escapeXml removes characters that XML 1.0 forbids', () => {
+  assert.equal(escapeXml('a\u0001b\u0008c\uFFFFd\uD800e\uDFFFf'), 'abcdef');
+});
+
+test('escapeXml keeps tab, newline, Japanese text and emoji', () => {
+  assert.equal(escapeXml('a\tb\nc\r日本語🎉'), 'a\tb\nc\r日本語🎉');
+});

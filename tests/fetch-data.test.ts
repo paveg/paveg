@@ -15,6 +15,8 @@ function fakeFetch(body: unknown, status = 200): { impl: FetchImpl; calls: Call[
   return { impl, calls };
 }
 
+const htmlFetch: FetchImpl = async () => new Response('<!doctype html>');
+
 test('loadPackages rejects non-array input', () => {
   assert.throws(() => loadPackages({ name: 'x', description: 'y' }), /array/);
 });
@@ -81,6 +83,38 @@ test('fetchDownloads throws with the package name when an entry lacks a string d
     const { impl } = fakeFetch({ downloads: [{ day: '2026-01-02', downloads: 1 }, entry] });
     await assert.rejects(fetchDownloads('hono-dpop', impl), /hono-dpop/, JSON.stringify(entry));
   }
+});
+
+test('fetchDownloads rejects non-finite, negative and non-integer downloads', async () => {
+  const invalidCounts = ['1e309', '-1', '1.5', '9007199254740992'];
+  for (const count of invalidCounts) {
+    const impl: FetchImpl = async () =>
+      new Response(`{"downloads":[{"day":"2026-01-01","downloads":${count}}]}`);
+    await assert.rejects(
+      fetchDownloads('hono-dpop', impl),
+      /npm downloads for hono-dpop: downloads has an invalid entry/,
+      count,
+    );
+  }
+});
+
+test('fetchDownloads accepts zero downloads', async () => {
+  const { impl } = fakeFetch({ downloads: [{ day: '2026-01-01', downloads: 0 }] });
+  assert.deepEqual(await fetchDownloads('hono-dpop', impl), [0]);
+});
+
+test('fetchDownloads names the package when the body is not JSON', async () => {
+  await assert.rejects(
+    fetchDownloads('hono-dpop', htmlFetch),
+    /npm downloads for hono-dpop: invalid JSON/,
+  );
+});
+
+test('fetchRepoMeta names the repo when the body is not JSON', async () => {
+  await assert.rejects(
+    fetchRepoMeta('hono-dpop', 't', htmlFetch),
+    /GitHub repo paveg\/hono-dpop: invalid JSON/,
+  );
 });
 
 test('fetchRepoMeta requests the GitHub repos API without auth when no token', async () => {

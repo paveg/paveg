@@ -51,10 +51,10 @@ export async function main({
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main({ fetchImpl: fetch, token: process.env.GITHUB_TOKEN, rootDir: process.cwd() }).catch(
-    (error: unknown) => {
-      console.error(error instanceof Error ? error.message : error);
-      process.exit(1);
-    },
-  );
+  try {
+    await main({ fetchImpl: fetch, token: process.env.GITHUB_TOKEN, rootDir: process.cwd() });
+  } catch (error: unknown) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
 }
