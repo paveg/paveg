@@ -34,12 +34,10 @@ export const FONT = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica N
 
 const XML_ILLEGAL_CHARACTERS = /[^\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu;
 
+export const stripXmlIllegal = (text: string): string => text.replace(XML_ILLEGAL_CHARACTERS, '');
+
 export const escapeXml = (text: string): string =>
-  text
-    .replace(XML_ILLEGAL_CHARACTERS, '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  stripXmlIllegal(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export const compactNumber = (value: number): string => {
   if (value < 1000) return String(value);

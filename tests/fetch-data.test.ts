@@ -186,3 +186,130 @@ test('fetchRepoMeta maps NOASSERTION license to null', async () => {
   });
   assert.equal((await fetchRepoMeta('hono-dpop', 't', impl)).license, null);
 });
+
+const dayEntries = (count: number) =>
+  Array.from({ length: count }, (_, index) => ({
+    day: new Date(Date.UTC(2026, 0, 1 + index)).toISOString().slice(0, 10),
+    downloads: index,
+  }));
+
+test('fetchDownloads accepts 31 entries and rejects 0 and 32', async () => {
+  const accepted = fakeFetch({ downloads: dayEntries(31) });
+  assert.equal((await fetchDownloads('hono-dpop', accepted.impl)).length, 31);
+  for (const count of [0, 32]) {
+    const { impl } = fakeFetch({ downloads: dayEntries(count) });
+    await assert.rejects(
+      fetchDownloads('hono-dpop', impl),
+      /npm downloads for hono-dpop: unexpected entry count/,
+      String(count),
+    );
+  }
+});
+
+test('fetchDownloads names the entry count when it is out of range', async () => {
+  const { impl } = fakeFetch({ downloads: dayEntries(32) });
+  await assert.rejects(
+    fetchDownloads('hono-dpop', impl),
+    /npm downloads for hono-dpop: unexpected entry count 32/,
+  );
+});
+
+test('fetchDownloads rejects days that are not zero-padded ISO dates', async () => {
+  for (const day of ['2026-11-9', '2026-1-01', '20261109', '2026-11-09T00:00', '']) {
+    const { impl } = fakeFetch({ downloads: [{ day, downloads: 1 }] });
+    await assert.rejects(
+      fetchDownloads('hono-dpop', impl),
+      /npm downloads for hono-dpop: downloads has an invalid entry/,
+      day,
+    );
+  }
+});
+
+test('fetchDownloads rejects duplicate days', async () => {
+  const { impl } = fakeFetch({
+    downloads: [
+      { day: '2026-01-01', downloads: 1 },
+      { day: '2026-01-01', downloads: 2 },
+    ],
+  });
+  await assert.rejects(
+    fetchDownloads('hono-dpop', impl),
+    /npm downloads for hono-dpop: downloads has an invalid entry/,
+  );
+});
+
+test('fetchRepoMeta accepts MAX_SAFE_INTEGER stars and rejects the next integer, 1e21 and Infinity', async () => {
+  const accepted = fakeFetch({
+    stargazers_count: Number.MAX_SAFE_INTEGER,
+    language: null,
+    license: null,
+  });
+  assert.equal(
+    (await fetchRepoMeta('hono-dpop', 't', accepted.impl)).stars,
+    Number.MAX_SAFE_INTEGER,
+  );
+  for (const literal of ['9007199254740992', '1e21', '1e309']) {
+    const impl: FetchImpl = async () =>
+      new Response(`{"stargazers_count":${literal},"language":null,"license":null}`);
+    await assert.rejects(
+      fetchRepoMeta('hono-dpop', 't', impl),
+      /paveg\/hono-dpop: invalid stargazers_count/,
+      literal,
+    );
+  }
+});
+
+test('fetchRepoMeta maps language and license without usable characters to null', async () => {
+  for (const blank of ['\u0001', '   ', '', ' \u0001 \u0002']) {
+    const { impl } = fakeFetch({
+      stargazers_count: 1,
+      language: blank,
+      license: { spdx_id: blank },
+    });
+    assert.deepEqual(await fetchRepoMeta('hono-dpop', 't', impl), {
+      stars: 1,
+      language: null,
+      license: null,
+    });
+  }
+});
+
+test('fetchRepoMeta trims language and license and removes XML-illegal characters', async () => {
+  const { impl } = fakeFetch({
+    stargazers_count: 1,
+    language: ' Type\u0001Script ',
+    license: { spdx_id: ' M\u0002IT ' },
+  });
+  assert.deepEqual(await fetchRepoMeta('hono-dpop', 't', impl), {
+    stars: 1,
+    language: 'TypeScript',
+    license: 'MIT',
+  });
+});
+
+test('fetchRepoMeta accepts 40 characters and rejects 41 for language and license', async () => {
+  const accepted = fakeFetch({
+    stargazers_count: 1,
+    language: 'l'.repeat(40),
+    license: { spdx_id: 's'.repeat(40) },
+  });
+  assert.deepEqual(await fetchRepoMeta('hono-dpop', 't', accepted.impl), {
+    stars: 1,
+    language: 'l'.repeat(40),
+    license: 's'.repeat(40),
+  });
+  const longLanguage = fakeFetch({ stargazers_count: 1, language: 'l'.repeat(41), license: null });
+  await assert.rejects(
+    fetchRepoMeta('hono-dpop', 't', longLanguage.impl),
+    /GitHub repo paveg\/hono-dpop: language too long/,
+  );
+  const longLicense = fakeFetch({
+    stargazers_count: 1,
+    language: null,
+    license: { spdx_id: 's'.repeat(41) },
+  });
+  await assert.rejects(
+    fetchRepoMeta('hono-dpop', 't', longLicense.impl),
+    /GitHub repo paveg\/hono-dpop: license too long/,
+  );
+});
