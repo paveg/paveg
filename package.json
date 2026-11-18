@@ -1,0 +1,1 @@
+{"name":"paveg-profile","private":true,"type":"module","scripts":{"test":"node --test tests/","generate":"node scripts/generate.mjs"}}
