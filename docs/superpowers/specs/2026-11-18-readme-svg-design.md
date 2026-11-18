@@ -31,7 +31,7 @@ devcardは、キャッシュが切れた瞬間にGitHub APIの応答を待つ作
   2. devcardを閉じる（gh-infraでのアーカイブと、Cloudflare上のWorkerとKVの削除）
   3. paveg/meに経歴YAML（ポートフォリオv1のTask 2）が入ったら、経歴トレースを足す
 - **定期実行**: GitHub Actionsで1日1回と、手動実行（`workflow_dispatch`）で動かす。
-- **失敗したとき**: データの取得が1つでも失敗したら、ジョブを失敗させてコミットしない。前回のSVGが残るので、READMEの画像は壊れない。失敗はActionsの通知で気づく。形が不正な応答や範囲外の値は、名前の付いたエラーで失敗する。値そのものの真偽は検証しない。
+- **失敗したとき**: データの取得が1つでも失敗したら、ジョブを失敗させてコミットしない。前回のSVGが残るので、READMEの画像は壊れない。失敗はActionsの通知で気づく。形が不正な応答（JSONでない、ダウンロード数やスター数が範囲外、日付の形式が違うなど）は、名前の付いたエラーで失敗する。言語とライセンスは、文字列でない値や中身が空の値を「表示しない」扱いにする。XMLとして不正な文字は取り除く。値そのものの真偽は検証しないので、安全な整数の範囲に収まる大きすぎる数や、見えない文字だけの名前はそのまま表示される。
 - **差分がないとき**: SVGが前回と同じなら、コミットしない。
 - **データの取り方**:
   - ダウンロード数は、npmのAPI（`api.npmjs.org/downloads/range/last-month/<name>`）から取る。
@@ -40,7 +40,7 @@ devcardは、キャッシュが切れた瞬間にGitHub APIの応答を待つ作
 - **手で持つデータ**: パッケージの一覧と英語の説明だけは、paveg/pavegの設定ファイルに書く。
 - **言語とツール**: コードはTypeScriptで書き、Node 26の型除去で実行する。パッケージマネージャーはpnpmにする。
 - **依存パッケージ**: 実行時の依存パッケージは持たない。型チェック、lint、フォーマットのために、typescript・@types/node・oxlint・oxfmtだけを開発用に入れる。
-- **書き込みトークン**: ジョブを`generate`と`commit`の2つに分ける。`generate`は読み取り権限（`contents: read`）だけで、依存パッケージを入れてチェックと生成を行い、`assets/oss`をartifactとして渡す。`commit`は書き込み権限（`contents: write`）を持つが、依存を入れず、リポジトリのコードも実行しない。artifactはリポジトリの外に取り出し、設定にあるパッケージの`.svg`だけに限って`assets/oss`へ取り込む。それ以外のファイルがあるか、期待するファイルが欠けるか、SVGらしくなければ失敗する。書き込みトークンは、pushするステップにだけ渡す。どちらのcheckoutも認証情報を`.git/config`に残さない（`persist-credentials: false`）。ワークフロー全体の`permissions`は空にして、各ジョブが必要な分だけ宣言する。
+- **書き込みトークン**: ジョブを`generate`と`commit`の2つに分ける。`generate`は読み取り権限（`contents: read`）だけで、依存パッケージを入れてチェックと生成を行い、`assets/oss`をartifactとして渡す。`commit`は書き込み権限（`contents: write`）を持つが、依存を入れず、リポジトリのコードも実行しない。artifactはリポジトリの外に取り出し、設定にあるパッケージの`.svg`だけに限って`assets/oss`へ取り込む。それ以外のファイルがあるか、期待するファイルが欠けるか、SVGらしくなければ失敗する。`run`のステップのうち、書き込みトークンを渡すのはpushのステップだけにする（`commit`のcheckoutはアクションの既定でトークンを受け取るが、取得が終わると消す）。どちらのcheckoutも認証情報を`.git/config`に残さない（`persist-credentials: false`）。ワークフロー全体の`permissions`は空にして、各ジョブが必要な分だけ宣言する。
 - **画像プロキシ（camo）**: READMEの相対パスの画像はcamoを通らない。`github.com/<owner>/<repo>/raw/<branch>/...`から`image/svg+xml`で配信され、SVGの中の`@keyframes`も残る。ブランチのREADMEとプロフィールページで確かめた。
 
 ## 実装する人に任せること
