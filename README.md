@@ -1,6 +1,6 @@
 # Ryota Ikezawa / paveg
 
-Software Engineer in Japan. Building production-grade middleware for **[Hono](https://hono.dev)** on **[Cloudflare Workers](https://workers.cloudflare.com/)**.
+Site Reliability Engineer / Platform Engineer in Japan. Building production-grade middleware for **[Hono](https://hono.dev)** on **[Cloudflare Workers](https://workers.cloudflare.com/)**.
 
 ## Featured OSS — Hono Middleware Suite
 
