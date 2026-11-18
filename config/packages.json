@@ -1,0 +1,7 @@
+[
+  { "name": "hono-problem-details", "description": "RFC 9457 problem+json error responses" },
+  { "name": "hono-idempotency", "description": "Stripe-style Idempotency-Key middleware" },
+  { "name": "hono-webhook-verify", "description": "Webhook signature verification" },
+  { "name": "hono-cf-access", "description": "Country / ASN blocking and maintenance mode" },
+  { "name": "hono-dpop", "description": "DPoP (RFC 9449) proof-of-possession" }
+]

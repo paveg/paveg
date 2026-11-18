@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="164" viewBox="0 0 380 164" role="img" aria-labelledby="title">
+<title id="title">hono-cf-access: Country / ASN blocking and maintenance mode. 8 GitHub stars, 46 npm downloads in the last 30 days, TypeScript, MIT license</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #E6ECF2; }
+  .name { font-size: 16px; font-weight: 700; fill: #6FA0F2; }
+  .description { font-size: 12.5px; fill: #9AABBD; }
+  .meta { font-size: 12px; fill: #9AABBD; font-variant-numeric: tabular-nums; }
+  .meta tspan.value { fill: #E6ECF2; font-weight: 600; }
+  .stars { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .star { fill: #F2B544; transform-box: fill-box; transform-origin: center; animation: pop 600ms cubic-bezier(.34, 1.56, .64, 1) 1500ms both; }
+  .line { fill: none; stroke: #6FA0F2; stroke-width: 1.75; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1400ms cubic-bezier(.65, 0, .35, 1) 200ms forwards; }
+  .area { fill: #6FA0F2; opacity: 0; animation: fade 600ms ease-out 1300ms forwards; }
+  .rule { stroke: #2A3B4F; stroke-width: 1; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: .12; } }
+  @keyframes pop { 0% { transform: scale(.4) rotate(-30deg); } 100% { transform: scale(1) rotate(0); } }
+  @media (prefers-reduced-motion: reduce) { .line { animation: none; stroke-dashoffset: 0; } .area { animation: none; opacity: .12; } .star { animation: none; } }
+</style>
+<rect x="0.5" y="0.5" width="379" height="163" rx="12" fill="#14212F" stroke="#2A3B4F"/>
+<text x="20" y="34" class="name">hono-cf-access</text>
+<g transform="translate(330.5 21)"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" class="star"/></g>
+<text x="360" y="34" text-anchor="end" class="stars">8</text>
+<text x="20" y="56" class="description">Country / ASN blocking and maintenance mode</text>
+<path d="M20.0 116.0 L31.7 116.0 L43.4 116.0 L55.2 116.0 L66.9 105.5 L78.6 74.0 L90.3 110.8 L102.1 116.0 L113.8 110.8 L125.5 110.8 L137.2 116.0 L149.0 116.0 L160.7 79.3 L172.4 100.3 L184.1 79.3 L195.9 116.0 L207.6 116.0 L219.3 116.0 L231.0 116.0 L242.8 105.5 L254.5 110.8 L266.2 105.5 L277.9 95.0 L289.7 116.0 L301.4 110.8 L313.1 100.3 L324.8 116.0 L336.6 110.8 L348.3 116.0 L360.0 105.5 L360 116 L20 116 Z" class="area"/>
+<path d="M20.0 116.0 L31.7 116.0 L43.4 116.0 L55.2 116.0 L66.9 105.5 L78.6 74.0 L90.3 110.8 L102.1 116.0 L113.8 110.8 L125.5 110.8 L137.2 116.0 L149.0 116.0 L160.7 79.3 L172.4 100.3 L184.1 79.3 L195.9 116.0 L207.6 116.0 L219.3 116.0 L231.0 116.0 L242.8 105.5 L254.5 110.8 L266.2 105.5 L277.9 95.0 L289.7 116.0 L301.4 110.8 L313.1 100.3 L324.8 116.0 L336.6 110.8 L348.3 116.0 L360.0 105.5" class="line" pathLength="1"/>
+<line x1="20" y1="116" x2="360" y2="116" class="rule"/>
+<circle cx="25" cy="140" r="5" fill="#3178C6"/>
+<text x="36" y="144" class="meta">TypeScript</text>
+<text x="122" y="144" class="meta">MIT</text>
+<text x="360" y="144" text-anchor="end" class="meta"><tspan class="value">46</tspan> downloads / 30 days</text>
+</svg>

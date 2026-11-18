@@ -1,6 +1,6 @@
 # Ryota Ikezawa / paveg
 
-Software Engineer in Japan. Building production-grade middleware for **[Hono](https://hono.dev)** on **[Cloudflare Workers](https://workers.cloudflare.com/)**.
+Site Reliability Engineer / Platform Engineer in Japan. Building production-grade middleware for **[Hono](https://hono.dev)** on **[Cloudflare Workers](https://workers.cloudflare.com/)**.
 
 ## Featured OSS — Hono Middleware Suite
 
@@ -8,18 +8,13 @@ Production hardening for Hono apps — standard error contracts, safe retries, a
 
 If you find these useful, starring the repos helps others discover them. Issues and PRs welcome.
 
-| Package | What it does | Downloads |
-| --- | --- | --- |
-| [**hono-problem-details**](https://github.com/paveg/hono-problem-details) | RFC 9457 `application/problem+json` error responses | [![npm](https://img.shields.io/npm/dw/hono-problem-details?label=%20&color=informational)](https://www.npmjs.com/package/hono-problem-details) |
-| [**hono-idempotency**](https://github.com/paveg/hono-idempotency) | Stripe-style `Idempotency-Key` middleware with KV / D1 / Memory stores | [![npm](https://img.shields.io/npm/dw/hono-idempotency?label=%20&color=informational)](https://www.npmjs.com/package/hono-idempotency) |
-| [**hono-webhook-verify**](https://github.com/paveg/hono-webhook-verify) | Webhook signature verification (Stripe, GitHub, Slack, Shopify, Twilio, Standard Webhooks) | [![npm](https://img.shields.io/npm/dw/hono-webhook-verify?label=%20&color=informational)](https://www.npmjs.com/package/hono-webhook-verify) |
-| [**hono-dpop**](https://github.com/paveg/hono-dpop) | DPoP (RFC 9449) proof-of-possession verification (Memory / Redis / Cloudflare KV / D1 / Durable Objects stores) | [![npm](https://img.shields.io/npm/dw/hono-dpop?label=%20&color=informational)](https://www.npmjs.com/package/hono-dpop) |
-| [**hono-cf-access**](https://github.com/paveg/hono-cf-access) | Country / ASN blocking and maintenance mode via Cloudflare Workers `request.cf` | [![npm](https://img.shields.io/npm/dw/hono-cf-access?label=%20&color=informational)](https://www.npmjs.com/package/hono-cf-access) |
-
-## Stats
-
-![paveg's GitHub Stats](https://devcard.pavegy.workers.dev/api?username=paveg&theme=github_dark&show_icons=true&hide_rank=true&custom_title=GitHub+Stats&v=2)
-![paveg's Top Languages](https://devcard.pavegy.workers.dev/api/top-langs?username=paveg&theme=github_dark&layout=default&v=2)
+<p>
+<a href="https://github.com/paveg/hono-problem-details"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-problem-details-dark.svg"><img alt="hono-problem-details: RFC 9457 problem+json error responses" src="assets/oss/hono-problem-details-light.svg" width="380"></picture></a>
+<a href="https://github.com/paveg/hono-idempotency"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-idempotency-dark.svg"><img alt="hono-idempotency: Stripe-style Idempotency-Key middleware" src="assets/oss/hono-idempotency-light.svg" width="380"></picture></a>
+<a href="https://github.com/paveg/hono-webhook-verify"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-webhook-verify-dark.svg"><img alt="hono-webhook-verify: Webhook signature verification" src="assets/oss/hono-webhook-verify-light.svg" width="380"></picture></a>
+<a href="https://github.com/paveg/hono-cf-access"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-cf-access-dark.svg"><img alt="hono-cf-access: Country / ASN blocking and maintenance mode" src="assets/oss/hono-cf-access-light.svg" width="380"></picture></a>
+<a href="https://github.com/paveg/hono-dpop"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-dpop-dark.svg"><img alt="hono-dpop: DPoP (RFC 9449) proof-of-possession" src="assets/oss/hono-dpop-light.svg" width="380"></picture></a>
+</p>
 
 ## Elsewhere
 
