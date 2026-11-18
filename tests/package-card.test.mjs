@@ -60,3 +60,11 @@ test('themes use their own paper color', () => {
   assert.ok(renderPackageCard(card, 'light').includes('#FBFCFD'));
   assert.ok(renderPackageCard(card, 'dark').includes('#14212F'));
 });
+
+test('title uses the singular for exactly one star', () => {
+  const titleOf = (stars) => renderPackageCard({ ...card, stars }, 'light').match(/<title[^>]*>([^<]*)<\/title>/)[1];
+  assert.ok(titleOf(1).includes('1 GitHub star,'), titleOf(1));
+  assert.ok(!titleOf(1).includes('1 GitHub stars'), titleOf(1));
+  assert.ok(titleOf(2).includes('2 GitHub stars,'), titleOf(2));
+  assert.ok(titleOf(0).includes('0 GitHub stars,'), titleOf(0));
+});

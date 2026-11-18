@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="420" height="164" viewBox="0 0 420 164" role="img" aria-labelledby="title">
-<title id="title">hono-dpop: DPoP (RFC 9449) proof-of-possession. 1 GitHub stars, 66 npm downloads in the last 30 days, TypeScript, MIT license</title>
+<title id="title">hono-dpop: DPoP (RFC 9449) proof-of-possession. 1 GitHub star, 66 npm downloads in the last 30 days, TypeScript, MIT license</title>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #E6ECF2; }
   .name { font-size: 16px; font-weight: 700; fill: #6FA0F2; }

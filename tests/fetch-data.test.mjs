@@ -92,3 +92,20 @@ test('fetchRepoMeta throws with the repo and status on non-2xx', async () => {
   const { impl } = fakeFetch({ message: 'Forbidden' }, 403);
   await assert.rejects(fetchRepoMeta('hono-dpop', 't', impl), /hono-dpop.*403/);
 });
+
+test('fetchRepoMeta throws naming the repo when stargazers_count is missing', async () => {
+  const { impl } = fakeFetch({ language: 'TypeScript', license: null });
+  await assert.rejects(fetchRepoMeta('hono-dpop', 't', impl), /paveg\/hono-dpop.*stargazers_count/);
+});
+
+test('fetchRepoMeta rejects negative and non-integer stargazers_count', async () => {
+  for (const stargazers_count of [-1, 1.5, '3', null]) {
+    const { impl } = fakeFetch({ stargazers_count, language: null, license: null });
+    await assert.rejects(fetchRepoMeta('hono-dpop', 't', impl), /hono-dpop.*stargazers_count/, String(stargazers_count));
+  }
+});
+
+test('fetchRepoMeta maps NOASSERTION license to null', async () => {
+  const { impl } = fakeFetch({ stargazers_count: 2, language: 'TypeScript', license: { spdx_id: 'NOASSERTION' } });
+  assert.equal((await fetchRepoMeta('hono-dpop', 't', impl)).license, null);
+});

@@ -29,7 +29,7 @@ export function renderPackageCard(card, theme) {
     : '';
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title">
-<title id="title">${escapeXml(card.name)}: ${escapeXml(card.description)}. ${card.stars} GitHub stars, ${total} npm downloads in the last 30 days${escapeXml(titleTail)}</title>
+<title id="title">${escapeXml(card.name)}: ${escapeXml(card.description)}. ${card.stars} GitHub ${card.stars === 1 ? 'star' : 'stars'}, ${total} npm downloads in the last 30 days${escapeXml(titleTail)}</title>
 <style>
   text { font-family: ${FONT}; fill: ${c.ink}; }
   .name { font-size: 16px; font-weight: 700; fill: ${c.span}; }

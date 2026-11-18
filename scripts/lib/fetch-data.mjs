@@ -30,9 +30,12 @@ export async function fetchRepoMeta(repo, token, fetchImpl = fetch) {
   const response = await fetchImpl(`https://api.github.com/repos/paveg/${repo}`, { headers });
   if (!response.ok) throw new Error(`GitHub repo paveg/${repo}: HTTP ${response.status}`);
   const body = await response.json();
+  const stars = body.stargazers_count;
+  if (!Number.isInteger(stars) || stars < 0) throw new Error(`GitHub repo paveg/${repo}: invalid stargazers_count`);
+  const spdxId = body.license?.spdx_id;
   return {
-    stars: body.stargazers_count,
+    stars,
     language: body.language ?? null,
-    license: body.license?.spdx_id ?? null,
+    license: spdxId && spdxId !== 'NOASSERTION' ? spdxId : null,
   };
 }
