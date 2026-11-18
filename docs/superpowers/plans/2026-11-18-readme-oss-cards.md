@@ -47,7 +47,7 @@ scripts/generate.ts          エントリーポイント（取得→組み立て
 tests/*.test.ts              node:test
 .github/workflows/update-svgs.yml
 assets/oss/<name>-{light,dark}.svg   生成物（コミットする）
-package.json                  "type": "module"、scripts.test・scripts.generate
+package.json                  name・private・"type": "module"、packageManager（pnpm）、engines、scripts 7本
 ```
 
 ### Task 1: 共通の部品とカードの組み立て
@@ -79,7 +79,7 @@ package.json                  "type": "module"、scripts.test・scripts.generate
     - `light`と`dark`で、背景の`#FBFCFD`と`#14212F`がそれぞれ入る
 - [ ] **Step 2: 失敗を確かめる** Run: `pnpm run test` Expected: 未定義のimportで失敗
 - [ ] **Step 3: 実装する**
-  - `package.json`は`type: module`、`packageManager`（pnpm）、`engines`（Node 26以上）、スクリプト（`typecheck`、`lint`、`fmt`、`fmt:check`、`test`、`generate`、`check`）を持つ形にする
+  - `package.json`は`name: "paveg-profile"`、`private: true`（誤ってpublishしないため）、`type: module`、`packageManager`（pnpm）、`engines`（Node 26以上）、スクリプト（`typecheck`、`lint`、`fmt`、`fmt:check`、`test`、`generate`、`check`）を持つ形にする。`check`は`typecheck`→`lint`→`fmt:check`→`test`の順に実行する
   - カードの組み立ては、サンプルの`packageSvg`を移植する。折れ線の縦の幅は、`Math.max(...downloads, 1)`で割る
 - [ ] **Step 4: 通ることを確かめる** Run: `pnpm run test` Expected: すべてpass、終了コード0
 - [ ] **Step 5: コミット** `git commit -m "feat: OSSカードのSVGを組み立てる"`

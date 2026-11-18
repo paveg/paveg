@@ -29,7 +29,7 @@ test('loadPackages rejects a description of 49 characters or more', () => {
 });
 
 test('loadPackages reads config/packages.json', async () => {
-  const json = JSON.parse(
+  const json: unknown = JSON.parse(
     await readFile(new URL('../config/packages.json', import.meta.url), 'utf8'),
   );
   const packages = loadPackages(json);
@@ -68,6 +68,19 @@ test('fetchDownloads throws with the package name when downloads is not an array
 test('fetchDownloads throws with the package name when downloads is empty', async () => {
   const { impl } = fakeFetch({ downloads: [] });
   await assert.rejects(fetchDownloads('hono-dpop', impl), /hono-dpop/);
+});
+
+test('fetchDownloads throws with the package name when an entry lacks a string day or numeric downloads', async () => {
+  const invalidEntries = [
+    { downloads: 1 },
+    { day: 20260101, downloads: 1 },
+    { day: '2026-01-01' },
+    { day: '2026-01-01', downloads: '1' },
+  ];
+  for (const entry of invalidEntries) {
+    const { impl } = fakeFetch({ downloads: [{ day: '2026-01-02', downloads: 1 }, entry] });
+    await assert.rejects(fetchDownloads('hono-dpop', impl), /hono-dpop/, JSON.stringify(entry));
+  }
 });
 
 test('fetchRepoMeta requests the GitHub repos API without auth when no token', async () => {
@@ -124,6 +137,11 @@ test('fetchRepoMeta rejects negative and non-integer stargazers_count', async ()
       String(stargazers_count),
     );
   }
+});
+
+test('fetchRepoMeta returns language null when language is not a string', async () => {
+  const { impl } = fakeFetch({ stargazers_count: 1, language: 42, license: null });
+  assert.equal((await fetchRepoMeta('hono-dpop', 't', impl)).language, null);
 });
 
 test('fetchRepoMeta maps NOASSERTION license to null', async () => {
