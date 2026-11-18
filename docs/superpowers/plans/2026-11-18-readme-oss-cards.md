@@ -25,7 +25,7 @@
 - 書体は`-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif`。外部のフォントは読み込まない
 - アニメーションは一度だけ再生し、終わったら完成した状態で止める（`forwards`か`both`）。`@media (prefers-reduced-motion: reduce)`では、最初から完成した状態にする
 - 星はOcticonsの`star-fill-16`のパスを使い、色は`open`にする。位置は外側の`<g transform>`で決め、アニメーションは中の`<path>`にだけかける（CSSの`transform`が`transform`属性を上書きするため）
-- 見た目は、サンプル`/private/tmp/claude-501/-Users-ryota-repos-github-com-paveg-portfolio/50d61ac0-9a33-4606-81a1-2195ccc15652/scratchpad/readme-sample/generate.mjs`の`packageSvg`に合わせる。カードは420×164
+- 見た目は、サンプル`/private/tmp/claude-501/-Users-ryota-repos-github-com-paveg-portfolio/50d61ac0-9a33-4606-81a1-2195ccc15652/scratchpad/readme-sample/generate.mjs`の`packageSvg`に合わせる。カードは380×164
 - push、PRの作成、mainへのマージは、ユーザーに確認してから行う
 
 ## Review Focus
@@ -75,7 +75,7 @@ package.json                  name・private・"type": "module"、packageManager
     - ダウンロードがすべて0の30日分で、出力に`NaN`も`Infinity`も含まれない
     - 説明文が`'Fast & <safe>'`のとき、`Fast &amp; &lt;safe&gt;`が含まれ、`<safe>`は含まれない
     - `language: null`と`license: null`のとき、`<circle`も`null`という文字列も含まれない
-    - `stars: 1234`のとき`>1.2k<`が含まれる。星の`<g transform="translate(X `のXが、`420 - 20 - 文字数×8.5 - 21`（4文字）以下になる
+    - `stars: 1234`のとき`>1.2k<`が含まれる。星の`<g transform="translate(X `のXが、`380 - 20 - 文字数×8.5 - 21`（4文字）以下になる
     - `light`と`dark`で、背景の`#FBFCFD`と`#14212F`がそれぞれ入る
 - [ ] **Step 2: 失敗を確かめる** Run: `pnpm run test` Expected: 未定義のimportで失敗
 - [ ] **Step 3: 実装する**
@@ -182,7 +182,7 @@ package.json                  name・private・"type": "module"、packageManager
   - 表は、`config/packages.json`の順にカードを並べたものに置き換える。1件ごとに次の形にする
 
 ```html
-<a href="https://github.com/paveg/hono-problem-details"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-problem-details-dark.svg"><img alt="hono-problem-details: RFC 9457 problem+json error responses" src="assets/oss/hono-problem-details-light.svg" width="420"></picture></a>
+<a href="https://github.com/paveg/hono-problem-details"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/oss/hono-problem-details-dark.svg"><img alt="hono-problem-details: RFC 9457 problem+json error responses" src="assets/oss/hono-problem-details-light.svg" width="380"></picture></a>
 ```
 
   - 「Stats」の節（devcardの画像2枚）は消す。「Elsewhere」は変えない
