@@ -40,7 +40,7 @@ devcardは、キャッシュが切れた瞬間にGitHub APIの応答を待つ作
 - **手で持つデータ**: パッケージの一覧と英語の説明だけは、paveg/pavegの設定ファイルに書く。
 - **言語とツール**: コードはTypeScriptで書き、Node 26の型除去で実行する。パッケージマネージャーはpnpmにする。
 - **依存パッケージ**: 実行時の依存パッケージは持たない。型チェック、lint、フォーマットのために、typescript・@types/node・oxlint・oxfmtだけを開発用に入れる。
-- **書き込みトークン**: ジョブを`generate`と`commit`の2つに分ける。`generate`は読み取り権限（`contents: read`）だけで、依存パッケージを入れてチェックと生成を行い、`assets/oss`をartifactとして渡す。`commit`は書き込み権限（`contents: write`）を持つが、依存を入れず、リポジトリのコードも実行しない。artifactを取り出して、pushするステップにだけ`GITHUB_TOKEN`を渡す。どちらのcheckoutも認証情報を`.git/config`に残さない（`persist-credentials: false`）。ワークフロー全体の`permissions`は空にして、各ジョブが必要な分だけ宣言する。
+- **書き込みトークン**: ジョブを`generate`と`commit`の2つに分ける。`generate`は読み取り権限（`contents: read`）だけで、依存パッケージを入れてチェックと生成を行い、`assets/oss`をartifactとして渡す。`commit`は書き込み権限（`contents: write`）を持つが、依存を入れず、リポジトリのコードも実行しない。artifactはリポジトリの外に取り出し、設定にあるパッケージの`.svg`だけに限って`assets/oss`へ取り込む。それ以外のファイルがあるか、期待するファイルが欠けるか、SVGらしくなければ失敗する。書き込みトークンは、pushするステップにだけ渡す。どちらのcheckoutも認証情報を`.git/config`に残さない（`persist-credentials: false`）。ワークフロー全体の`permissions`は空にして、各ジョブが必要な分だけ宣言する。
 - **画像プロキシ（camo）**: READMEの相対パスの画像はcamoを通らない。`github.com/<owner>/<repo>/raw/<branch>/...`から`image/svg+xml`で配信され、SVGの中の`@keyframes`も残る。ブランチのREADMEとプロフィールページで確かめた。
 
 ## 実装する人に任せること

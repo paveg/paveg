@@ -167,8 +167,10 @@ package.json                  name・private・"type": "module"、packageManager
     - `actions/upload-artifact`で`assets/oss`を渡す（`if-no-files-found: error`、`retention-days: 1`）
   - `commit`ジョブ（`needs: generate`、`permissions: contents: write`）。pnpmもNodeも入れず、依存のインストールも、リポジトリのコードの実行もしない
     - checkout（`persist-credentials: false`）
-    - `actions/download-artifact`で`assets/oss`に取り出す
-    - `git add assets`のあと、`git diff --cached --quiet`が成功（差分なし）ならpushせずに終わる。差分があれば`github-actions[bot]`の名前（`41898283+github-actions[bot]@users.noreply.github.com`）で`chore: update README SVGs`をコミットし、stepの`env`で渡した`GITHUB_TOKEN`を`git -c http.https://github.com/.extraheader=...`のpushにだけ使う
+    - `actions/download-artifact`で、リポジトリの外（`${{ runner.temp }}/cards`）に取り出す
+    - 検証のステップ（トークンなし）。`config/packages.json`を`jq`で読み、各パッケージの`<name>-light.svg`と`<name>-dark.svg`だけが、通常ファイルとして過不足なくあることを確かめる。ディレクトリ、シンボリックリンク、ドットファイル、余分なファイルがあれば失敗する。各ファイルは64 KiB以下で、先頭が`<svg`でなければ失敗する。通ったら`assets/oss/`へ`cp`する
+    - コミットのステップ（トークンなし）。`git add assets/oss`のあと、`git diff --cached --quiet`が成功（差分なし）なら`changed=false`を`$GITHUB_OUTPUT`に書いて終わる。差分があれば`github-actions[bot]`の名前（`41898283+github-actions[bot]@users.noreply.github.com`）で`chore: update README SVGs`をコミットし、`changed=true`を書く
+    - pushのステップ（`if: steps.commit.outputs.changed == 'true'`）。`env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`をこのステップにだけ渡し、`git -c http.https://github.com/.extraheader=...`で`push`する
   - アクションはSHAで固定する。SHAは`gh api repos/actions/checkout/git/ref/tags/v7.0.1 --jq .object.sha`のように取り、`# v7.0.1`をコメントに残す。tagが注釈付きタグのときは、`git/tags/<sha>`を引いてコミットのSHAにする
 - [ ] **Step 5: 実データで生成する** Run: `GITHUB_TOKEN=$(gh auth token) pnpm run generate && ls assets/oss | wc -l && for f in assets/oss/*.svg; do xmllint --noout "$f"; done` Expected: `10`、xmllintのエラーなし
 - [ ] **Step 6: コミット** `git commit -m "feat: OSSカードを毎日生成するワークフローを追加する"`（`assets/oss/`も含める）
