@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compactNumber, escapeXml } from '../scripts/lib/svg.mjs';
+import { compactNumber, escapeXml } from '../scripts/lib/svg.ts';
 
 test('compactNumber abbreviates thousands', () => {
   assert.equal(compactNumber(999), '999');

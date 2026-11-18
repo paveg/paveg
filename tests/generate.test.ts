@@ -3,12 +3,14 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { buildCards, writeCards, main } from '../scripts/generate.mjs';
+import { buildCards, writeCards, main } from '../scripts/generate.ts';
+import type { FetchImpl } from '../scripts/lib/fetch-data.ts';
 
 const packages = ['alpha', 'beta', 'gamma', 'delta', 'epsilon'].map((name) => ({ name, description: `${name} description` }));
 
-function fakeFetch({ failingNpmPackage } = {}) {
-  return async (url) => {
+function fakeFetch({ failingNpmPackage }: { failingNpmPackage?: string } = {}): FetchImpl {
+  return async (input) => {
+    const url = String(input);
     if (url.startsWith('https://api.npmjs.org/')) {
       if (failingNpmPackage && url.endsWith(`/${failingNpmPackage}`)) return new Response('{}', { status: 500 });
       return Response.json({ downloads: [{ day: '2026-01-01', downloads: 10 }, { day: '2026-01-02', downloads: 20 }] });
@@ -29,7 +31,7 @@ test('buildCards returns a light and dark SVG for every package', async () => {
   assert.equal(cards.size, 10);
   assert.ok(cards.has('assets/oss/alpha-light.svg'));
   assert.ok(cards.has('assets/oss/epsilon-dark.svg'));
-  assert.match(cards.get('assets/oss/alpha-light.svg'), /^<svg /);
+  assert.match(cards.get('assets/oss/alpha-light.svg') ?? '', /^<svg /);
 });
 
 test('buildCards rejects when one npm request fails', async () => {

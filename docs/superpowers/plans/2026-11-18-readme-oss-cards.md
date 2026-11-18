@@ -4,7 +4,7 @@
 
 **Goal:** CIで毎日Honoミドルウェア5つのカードSVGを作ってコミットし、READMEのdevcardの画像とOSSの表を置き換える。
 
-**Architecture:** 依存パッケージを持たないNodeのスクリプトです。手順は3段に分けます。
+**Architecture:** 実行時の依存パッケージを持たないNodeのスクリプトです。コードはTypeScriptで、Node 26の型除去（type stripping）でそのまま実行します。型チェック、lint、フォーマットのために、typescript・@types/node・oxlint・oxfmtだけを開発用に入れます。手順は3段に分けます。
 
 1. npmとGitHubのAPIから全データを取得する
 2. カードの文字列を組み立てる
@@ -12,12 +12,12 @@
 
 取得が1つでも失敗したら何も書かずに終了コード1で止まります。GitHub Actionsは、`assets/`に差分があるときだけコミットします。
 
-**Tech Stack:** Node 26（ローカルと同じ）、ESM（`.mjs`）、テストは`node:test`、GitHub Actions（`actions/checkout` v7.0.1、`actions/setup-node` v7.1.0をSHAで固定）
+**Tech Stack:** Node 26（ローカルと同じ）、TypeScript（ESM、型除去で実行）、パッケージマネージャーはpnpm、テストは`node:test`、GitHub Actions（`actions/checkout` v7.0.1、`pnpm/action-setup` v6.1.1、`actions/setup-node` v7.1.0をSHAで固定）
 
 **Spec:** `docs/superpowers/specs/2026-11-18-readme-svg-design.md`
 
 ## Global Constraints
-- 依存パッケージは追加しない（`package.json`に`dependencies`も`devDependencies`も書かない）
+- 実行時の依存パッケージは持たない（`package.json`に`dependencies`は書かない）。開発用に入れるのは、型チェックのtypescriptと@types/node、lintのoxlint、フォーマットのoxfmtだけ（`devDependencies`）
 - 色はme.funailog.comと同じ値を使う
   - ライト：paper `#FBFCFD`、ink `#1C2733`、muted `#5B6B7C`、rule `#DCE2E9`、span `#2E6BD6`、open `#B07200`
   - ダーク：paper `#14212F`、ink `#E6ECF2`、muted `#9AABBD`、rule `#2A3B4F`、span `#6FA0F2`、open `#F2B544`
@@ -40,11 +40,11 @@
 ## ファイル構成
 ```
 config/packages.json          パッケージ名と英語の説明（手で持つデータ）
-scripts/lib/svg.mjs           THEMES・FONT・escapeXml・compactNumber
-scripts/lib/package-card.mjs  renderPackageCard（純粋関数）
-scripts/lib/fetch-data.mjs    loadPackages・fetchDownloads・fetchRepoMeta
-scripts/generate.mjs          エントリーポイント（取得→組み立て→書き出し）
-tests/*.test.mjs              node:test
+scripts/lib/svg.ts           THEMES・FONT・escapeXml・compactNumber
+scripts/lib/package-card.ts  renderPackageCard（純粋関数）
+scripts/lib/fetch-data.ts    loadPackages・fetchDownloads・fetchRepoMeta
+scripts/generate.ts          エントリーポイント（取得→組み立て→書き出し）
+tests/*.test.ts              node:test
 .github/workflows/update-svgs.yml
 assets/oss/<name>-{light,dark}.svg   生成物（コミットする）
 package.json                  "type": "module"、scripts.test・scripts.generate
@@ -53,8 +53,8 @@ package.json                  "type": "module"、scripts.test・scripts.generate
 ### Task 1: 共通の部品とカードの組み立て
 
 **Files:**
-- Create: `package.json`, `scripts/lib/svg.mjs`, `scripts/lib/package-card.mjs`
-- Test: `tests/svg.test.mjs`, `tests/package-card.test.mjs`
+- Create: `package.json`, `scripts/lib/svg.ts`, `scripts/lib/package-card.ts`
+- Test: `tests/svg.test.ts`, `tests/package-card.test.ts`
 
 **Interfaces:**
 - Produces:
@@ -66,10 +66,10 @@ package.json                  "type": "module"、scripts.test・scripts.generate
   - `PackageCard = { name: string, description: string, stars: number, language: string | null, license: string | null, downloads: number[] }`
 
 - [ ] **Step 1: テストを書く**
-  - `tests/svg.test.mjs`
+  - `tests/svg.test.ts`
     - `compactNumber`：`999→'999'`、`1000→'1.0k'`、`7312→'7.3k'`、`73012→'73k'`
     - `escapeXml('a & <b>')`が`'a &amp; &lt;b&gt;'`になる
-  - `tests/package-card.test.mjs`
+  - `tests/package-card.test.ts`
     - サンプルの`hono-idempotency`（stars 14、TypeScript、MIT）で、出力に`>hono-idempotency<`、`>14<`、`>TypeScript<`、`>MIT<`、`downloads / 30 days`、`#3178C6`が含まれる
     - `<title`の中身に、合計ダウンロード数（数字）が入る
     - ダウンロードがすべて0の30日分で、出力に`NaN`も`Infinity`も含まれない
@@ -77,18 +77,18 @@ package.json                  "type": "module"、scripts.test・scripts.generate
     - `language: null`と`license: null`のとき、`<circle`も`null`という文字列も含まれない
     - `stars: 1234`のとき`>1.2k<`が含まれる。星の`<g transform="translate(X `のXが、`420 - 20 - 文字数×8.5 - 21`（4文字）以下になる
     - `light`と`dark`で、背景の`#FBFCFD`と`#14212F`がそれぞれ入る
-- [ ] **Step 2: 失敗を確かめる** Run: `node --test tests/` Expected: 未定義のimportで失敗
+- [ ] **Step 2: 失敗を確かめる** Run: `pnpm run test` Expected: 未定義のimportで失敗
 - [ ] **Step 3: 実装する**
-  - `package.json`は`{"name":"paveg-profile","private":true,"type":"module","scripts":{"test":"node --test tests/","generate":"node scripts/generate.mjs"}}`にする
+  - `package.json`は`type: module`、`packageManager`（pnpm）、`engines`（Node 26以上）、スクリプト（`typecheck`、`lint`、`fmt`、`fmt:check`、`test`、`generate`、`check`）を持つ形にする
   - カードの組み立ては、サンプルの`packageSvg`を移植する。折れ線の縦の幅は、`Math.max(...downloads, 1)`で割る
-- [ ] **Step 4: 通ることを確かめる** Run: `npm test` Expected: すべてpass、終了コード0
+- [ ] **Step 4: 通ることを確かめる** Run: `pnpm run test` Expected: すべてpass、終了コード0
 - [ ] **Step 5: コミット** `git commit -m "feat: OSSカードのSVGを組み立てる"`
 
 ### Task 2: データの取得
 
 **Files:**
-- Create: `config/packages.json`, `scripts/lib/fetch-data.mjs`
-- Test: `tests/fetch-data.test.mjs`
+- Create: `config/packages.json`, `scripts/lib/fetch-data.ts`
+- Test: `tests/fetch-data.test.ts`
 
 **Interfaces:**
 - Consumes: なし
@@ -110,7 +110,7 @@ package.json                  "type": "module"、scripts.test・scripts.generate
     - `token`があれば`Authorization: Bearer <token>`を付ける
     - `stargazers_count`、`language`、`license.spdx_id`を返す。`license`が`null`なら`license: null`
     - 非2xxのときに例外を投げる
-- [ ] **Step 2: 失敗を確かめる** Run: `npm test` Expected: 新しいテストが失敗する
+- [ ] **Step 2: 失敗を確かめる** Run: `pnpm run test` Expected: 新しいテストが失敗する
 - [ ] **Step 3: 実装する**
   - `config/packages.json`の中身は次のとおり。順番はREADMEに並べる順。
 
@@ -124,14 +124,14 @@ package.json                  "type": "module"、scripts.test・scripts.generate
 ]
 ```
 
-- [ ] **Step 4: 通ることを確かめる** Run: `npm test` Expected: すべてpass
+- [ ] **Step 4: 通ることを確かめる** Run: `pnpm run test` Expected: すべてpass
 - [ ] **Step 5: コミット** `git commit -m "feat: npmとGitHubからカードのデータを取得する"`
 
 ### Task 3: 生成のエントリーポイントと定期実行
 
 **Files:**
-- Create: `scripts/generate.mjs`, `.github/workflows/update-svgs.yml`, `assets/oss/*.svg`（生成物）
-- Test: `tests/generate.test.mjs`
+- Create: `scripts/generate.ts`, `.github/workflows/update-svgs.yml`, `assets/oss/*.svg`（生成物）
+- Test: `tests/generate.test.ts`
 
 **Interfaces:**
 - Consumes: Task 1・2のすべて
@@ -144,10 +144,10 @@ package.json                  "type": "module"、scripts.test・scripts.generate
   - `writeCards`
     - 一時ディレクトリへ書くと、10ファイルできる
   - 失敗したときに何も書かないこと
-    - `generate.mjs`の`main`に偽の`fetchImpl`と一時ディレクトリを渡す
+    - `generate.ts`の`main`に偽の`fetchImpl`と一時ディレクトリを渡す
     - 1件失敗させたとき、一時ディレクトリに既存のファイルを置いておくと、そのまま残る
     - このために、`main({ fetchImpl, token, rootDir })`をexportする
-- [ ] **Step 2: 失敗を確かめる** Run: `npm test` Expected: 新しいテストが失敗する
+- [ ] **Step 2: 失敗を確かめる** Run: `pnpm run test` Expected: 新しいテストが失敗する
 - [ ] **Step 3: 実装する**
   - `main`は次の順で動く
     1. `config/packages.json`を読む
@@ -159,12 +159,14 @@ package.json                  "type": "module"、scripts.test・scripts.generate
   - `permissions: contents: write`、`concurrency: update-svgs`
   - ステップ
     - checkout
-    - setup-node（`node-version: 26`）
-    - `npm test`
-    - `npm run generate`（`env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`）
+    - pnpm/action-setup
+    - setup-node（`node-version: 26`、`cache: pnpm`）
+    - `pnpm install --frozen-lockfile`
+    - `pnpm run check`
+    - `pnpm run generate`（`env: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`）
     - `git add assets`のあと、`git diff --cached --quiet`が成功（差分なし）ならpushせずに終わる。差分があれば`github-actions[bot]`の名前（`41898283+github-actions[bot]@users.noreply.github.com`）で`chore: update README SVGs`をコミットしてpushする
   - アクションはSHAで固定する。SHAは`gh api repos/actions/checkout/git/ref/tags/v7.0.1 --jq .object.sha`のように取り、`# v7.0.1`をコメントに残す。tagが注釈付きタグのときは、`git/tags/<sha>`を引いてコミットのSHAにする
-- [ ] **Step 5: 実データで生成する** Run: `GITHUB_TOKEN=$(gh auth token) npm run generate && ls assets/oss | wc -l && for f in assets/oss/*.svg; do xmllint --noout "$f"; done` Expected: `10`、xmllintのエラーなし
+- [ ] **Step 5: 実データで生成する** Run: `GITHUB_TOKEN=$(gh auth token) pnpm run generate && ls assets/oss | wc -l && for f in assets/oss/*.svg; do xmllint --noout "$f"; done` Expected: `10`、xmllintのエラーなし
 - [ ] **Step 6: コミット** `git commit -m "feat: OSSカードを毎日生成するワークフローを追加する"`（`assets/oss/`も含める）
 
 ### Task 4: READMEの置き換えと実機での確認

@@ -1,12 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { loadPackages, fetchDownloads, fetchRepoMeta } from '../scripts/lib/fetch-data.mjs';
+import { loadPackages, fetchDownloads, fetchRepoMeta } from '../scripts/lib/fetch-data.ts';
+import type { FetchImpl } from '../scripts/lib/fetch-data.ts';
 
-function fakeFetch(body, status = 200) {
-  const calls = [];
-  const impl = async (url, options) => {
-    calls.push({ url, options });
+type Call = { url: string; init: RequestInit | undefined };
+
+function fakeFetch(body: unknown, status = 200): { impl: FetchImpl; calls: Call[] } {
+  const calls: Call[] = [];
+  const impl: FetchImpl = async (input, init) => {
+    calls.push({ url: String(input), init });
     return new Response(JSON.stringify(body), { status });
   };
   return { impl, calls };
@@ -29,14 +32,14 @@ test('loadPackages reads config/packages.json', async () => {
   const json = JSON.parse(await readFile(new URL('../config/packages.json', import.meta.url), 'utf8'));
   const packages = loadPackages(json);
   assert.equal(packages.length, 5);
-  assert.equal(packages[0].name, 'hono-problem-details');
-  assert.equal(packages[4].name, 'hono-dpop');
+  assert.equal(packages[0]?.name, 'hono-problem-details');
+  assert.equal(packages[4]?.name, 'hono-dpop');
 });
 
 test('fetchDownloads requests the npm range API for the last month', async () => {
   const { impl, calls } = fakeFetch({ downloads: [{ day: '2026-01-01', downloads: 1 }] });
   await fetchDownloads('hono-dpop', impl);
-  assert.equal(calls[0].url, 'https://api.npmjs.org/downloads/range/last-month/hono-dpop');
+  assert.equal(calls[0]?.url, 'https://api.npmjs.org/downloads/range/last-month/hono-dpop');
 });
 
 test('fetchDownloads returns counts sorted by day', async () => {
@@ -68,14 +71,14 @@ test('fetchDownloads throws with the package name when downloads is empty', asyn
 test('fetchRepoMeta requests the GitHub repos API without auth when no token', async () => {
   const { impl, calls } = fakeFetch({ stargazers_count: 1, language: 'TypeScript', license: null });
   await fetchRepoMeta('hono-dpop', undefined, impl);
-  assert.equal(calls[0].url, 'https://api.github.com/repos/paveg/hono-dpop');
-  assert.equal(calls[0].options.headers.Authorization, undefined);
+  assert.equal(calls[0]?.url, 'https://api.github.com/repos/paveg/hono-dpop');
+  assert.equal(new Headers(calls[0]?.init?.headers).get('Authorization'), null);
 });
 
 test('fetchRepoMeta sends the token as a Bearer header', async () => {
   const { impl, calls } = fakeFetch({ stargazers_count: 1, language: 'TypeScript', license: null });
   await fetchRepoMeta('hono-dpop', 'secret', impl);
-  assert.equal(calls[0].options.headers.Authorization, 'Bearer secret');
+  assert.equal(new Headers(calls[0]?.init?.headers).get('Authorization'), 'Bearer secret');
 });
 
 test('fetchRepoMeta maps stars, language and license spdx id', async () => {

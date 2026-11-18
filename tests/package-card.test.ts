@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderPackageCard, CARD_WIDTH, CARD_PAD } from '../scripts/lib/package-card.mjs';
+import { renderPackageCard, CARD_WIDTH, CARD_PAD } from '../scripts/lib/package-card.ts';
+import type { PackageCard } from '../scripts/lib/package-card.ts';
 
-const card = {
+const card: PackageCard = {
   name: 'hono-idempotency',
   description: 'Stripe-style Idempotency-Key middleware',
   stars: 14,
@@ -10,6 +11,15 @@ const card = {
   license: 'MIT',
   downloads: [0, 0, 166, 218, 326, 404, 247, 392, 350, 442, 215, 286, 226, 313, 177, 327, 676, 516, 294, 87, 102, 205, 409, 185, 258, 180, 53, 26, 123, 114],
 };
+
+function capture(text: string, pattern: RegExp): string {
+  const captured = text.match(pattern)?.[1];
+  assert.ok(captured !== undefined, `${pattern} did not match`);
+  return captured;
+}
+
+const titleOf = (svg: string): string => capture(svg, /<title[^>]*>([^<]*)<\/title>/);
+const starXOf = (svg: string): number => Number(capture(svg, /<g transform="translate\(([\d.]+) /));
 
 test('renders name, stars, language, license, label and language color', () => {
   const svg = renderPackageCard(card, 'light');
@@ -20,7 +30,7 @@ test('renders name, stars, language, license, label and language color', () => {
 
 test('title contains the total download count', () => {
   const total = card.downloads.reduce((sum, value) => sum + value, 0);
-  const title = renderPackageCard(card, 'light').match(/<title[^>]*>([^<]*)<\/title>/)[1];
+  const title = titleOf(renderPackageCard(card, 'light'));
   assert.ok(title.includes(String(total)), title);
 });
 
@@ -45,14 +55,14 @@ test('null language and license render no dot and no "null"', () => {
 test('star sits left of the compacted star count', () => {
   const svg = renderPackageCard({ ...card, stars: 1234 }, 'light');
   assert.ok(svg.includes('>1.2k<'));
-  const starX = Number(svg.match(/<g transform="translate\(([\d.]+) /)[1]);
+  const starX = starXOf(svg);
   assert.ok(starX <= CARD_WIDTH - CARD_PAD - 4 * 8.5 - 21, String(starX));
 });
 
 test('star X follows the compacted text width for five-digit stars', () => {
   const svg = renderPackageCard({ ...card, stars: 12345 }, 'light');
   assert.ok(svg.includes('>12k<'));
-  const starX = Number(svg.match(/<g transform="translate\(([\d.]+) /)[1]);
+  const starX = starXOf(svg);
   assert.equal(starX, CARD_WIDTH - CARD_PAD - 3 * 8.5 - 21);
 });
 
@@ -62,11 +72,11 @@ test('themes use their own paper color', () => {
 });
 
 test('title uses the singular for exactly one star', () => {
-  const titleOf = (stars) => renderPackageCard({ ...card, stars }, 'light').match(/<title[^>]*>([^<]*)<\/title>/)[1];
-  assert.ok(titleOf(1).includes('1 GitHub star,'), titleOf(1));
-  assert.ok(!titleOf(1).includes('1 GitHub stars'), titleOf(1));
-  assert.ok(titleOf(2).includes('2 GitHub stars,'), titleOf(2));
-  assert.ok(titleOf(0).includes('0 GitHub stars,'), titleOf(0));
+  const titleFor = (stars: number): string => titleOf(renderPackageCard({ ...card, stars }, 'light'));
+  assert.ok(titleFor(1).includes('1 GitHub star,'), titleFor(1));
+  assert.ok(!titleFor(1).includes('1 GitHub stars'), titleFor(1));
+  assert.ok(titleFor(2).includes('2 GitHub stars,'), titleFor(2));
+  assert.ok(titleFor(0).includes('0 GitHub stars,'), titleFor(0));
 });
 
 test('longest description keeps footer items at their anchors and right-aligned text at the right padding', () => {
