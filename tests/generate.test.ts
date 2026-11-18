@@ -6,16 +6,29 @@ import { join } from 'node:path';
 import { buildCards, writeCards, main } from '../scripts/generate.ts';
 import type { FetchImpl } from '../scripts/lib/fetch-data.ts';
 
-const packages = ['alpha', 'beta', 'gamma', 'delta', 'epsilon'].map((name) => ({ name, description: `${name} description` }));
+const packages = ['alpha', 'beta', 'gamma', 'delta', 'epsilon'].map((name) => ({
+  name,
+  description: `${name} description`,
+}));
 
 function fakeFetch({ failingNpmPackage }: { failingNpmPackage?: string } = {}): FetchImpl {
   return async (input) => {
     const url = String(input);
     if (url.startsWith('https://api.npmjs.org/')) {
-      if (failingNpmPackage && url.endsWith(`/${failingNpmPackage}`)) return new Response('{}', { status: 500 });
-      return Response.json({ downloads: [{ day: '2026-01-01', downloads: 10 }, { day: '2026-01-02', downloads: 20 }] });
+      if (failingNpmPackage && url.endsWith(`/${failingNpmPackage}`))
+        return new Response('{}', { status: 500 });
+      return Response.json({
+        downloads: [
+          { day: '2026-01-01', downloads: 10 },
+          { day: '2026-01-02', downloads: 20 },
+        ],
+      });
     }
-    return Response.json({ stargazers_count: 7, language: 'TypeScript', license: { spdx_id: 'MIT' } });
+    return Response.json({
+      stargazers_count: 7,
+      language: 'TypeScript',
+      license: { spdx_id: 'MIT' },
+    });
   };
 }
 
@@ -59,7 +72,9 @@ test('main leaves existing files untouched when a fetch fails', async () => {
   await mkdir(join(rootDir, 'assets', 'oss'), { recursive: true });
   const existing = join(rootDir, 'assets', 'oss', 'alpha-light.svg');
   await writeFile(existing, 'previous');
-  await assert.rejects(main({ fetchImpl: fakeFetch({ failingNpmPackage: 'gamma' }), token: 'token', rootDir }));
+  await assert.rejects(
+    main({ fetchImpl: fakeFetch({ failingNpmPackage: 'gamma' }), token: 'token', rootDir }),
+  );
   assert.equal(await readFile(existing, 'utf8'), 'previous');
   assert.deepEqual(await readdir(join(rootDir, 'assets', 'oss')), ['alpha-light.svg']);
 });

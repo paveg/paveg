@@ -11,33 +11,46 @@ export type PackageCard = {
 };
 
 const LANGUAGE_COLORS: Record<string, string> = { TypeScript: '#3178C6' };
-const STAR_PATH = 'M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z';
+const STAR_PATH =
+  'M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z';
 
 export const CARD_WIDTH = 380;
 export const CARD_PAD = 20;
 
 export function renderPackageCard(card: PackageCard, theme: Theme): string {
   const c = THEMES[theme];
-  const width = CARD_WIDTH, height = 164, pad = CARD_PAD;
-  const chartTop = 74, chartBottom = 116, chartLeft = pad, chartRight = width - pad;
+  const width = CARD_WIDTH,
+    height = 164,
+    pad = CARD_PAD;
+  const chartTop = 74,
+    chartBottom = 116,
+    chartLeft = pad,
+    chartRight = width - pad;
   const peak = Math.max(...card.downloads, 1);
   const lastIndex = Math.max(card.downloads.length - 1, 1);
   const points = card.downloads.map((value, index): [number, number] => [
     chartLeft + (index / lastIndex) * (chartRight - chartLeft),
     chartBottom - (value / peak) * (chartBottom - chartTop),
   ]);
-  const line = points.map(([px, py], index) => `${index ? 'L' : 'M'}${px.toFixed(1)} ${py.toFixed(1)}`).join(' ');
+  const line = points
+    .map(([px, py], index) => `${index ? 'L' : 'M'}${px.toFixed(1)} ${py.toFixed(1)}`)
+    .join(' ');
   const area = `${line} L${chartRight} ${chartBottom} L${chartLeft} ${chartBottom} Z`;
   const total = card.downloads.reduce((sum, value) => sum + value, 0);
   const starsText = compactNumber(card.stars);
   const starX = width - pad - starsText.length * 8.5 - 21;
   const footerY = 144;
-  const titleTail = [card.language, card.license && `${card.license} license`].filter(Boolean).map((part) => `, ${part}`).join('');
+  const titleTail = [card.language, card.license && `${card.license} license`]
+    .filter(Boolean)
+    .map((part) => `, ${part}`)
+    .join('');
   const languageColor = card.language ? LANGUAGE_COLORS[card.language] : undefined;
   const languageDot = languageColor
     ? `<circle cx="${pad + 5}" cy="${footerY - 4}" r="5" fill="${languageColor}"/>\n`
     : '';
-  const languageText = card.language ? `<text x="${pad + 16}" y="${footerY}" class="meta">${escapeXml(card.language)}</text>\n` : '';
+  const languageText = card.language
+    ? `<text x="${pad + 16}" y="${footerY}" class="meta">${escapeXml(card.language)}</text>\n`
+    : '';
   const licenseText = card.license
     ? `<text x="${card.language ? pad + 102 : pad}" y="${footerY}" class="meta">${escapeXml(card.license)}</text>\n`
     : '';

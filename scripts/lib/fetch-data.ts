@@ -8,7 +8,8 @@ export type RepoMeta = { stars: number; language: string | null; license: string
 
 type DownloadEntry = { day: string; downloads: number };
 
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
 
 const isDownloadEntry = (value: unknown): value is DownloadEntry =>
   isRecord(value) && typeof value.day === 'string' && typeof value.downloads === 'number';
@@ -19,27 +20,39 @@ export function loadPackages(json: unknown): PackageConfig[] {
     if (!isRecord(entry) || typeof entry.name !== 'string' || entry.name === '') {
       throw new Error(`packages[${index}]: name must be a non-empty string`);
     }
-    if (typeof entry.description !== 'string' || entry.description.length > MAX_DESCRIPTION_LENGTH) {
-      throw new Error(`packages[${index}] (${entry.name}): description must be a string of ${MAX_DESCRIPTION_LENGTH} characters or fewer`);
+    if (
+      typeof entry.description !== 'string' ||
+      entry.description.length > MAX_DESCRIPTION_LENGTH
+    ) {
+      throw new Error(
+        `packages[${index}] (${entry.name}): description must be a string of ${MAX_DESCRIPTION_LENGTH} characters or fewer`,
+      );
     }
     return { name: entry.name, description: entry.description };
   });
 }
 
-export async function fetchDownloads(name: string, fetchImpl: FetchImpl = fetch): Promise<number[]> {
+export async function fetchDownloads(
+  name: string,
+  fetchImpl: FetchImpl = fetch,
+): Promise<number[]> {
   const response = await fetchImpl(`https://api.npmjs.org/downloads/range/last-month/${name}`);
   if (!response.ok) throw new Error(`npm downloads for ${name}: HTTP ${response.status}`);
   const body: unknown = await response.json();
   const entries: unknown = isRecord(body) ? body.downloads : undefined;
-  if (!Array.isArray(entries)) throw new Error(`npm downloads for ${name}: downloads is not an array`);
+  if (!Array.isArray(entries))
+    throw new Error(`npm downloads for ${name}: downloads is not an array`);
   if (entries.length === 0) throw new Error(`npm downloads for ${name}: downloads is empty`);
-  if (!entries.every(isDownloadEntry)) throw new Error(`npm downloads for ${name}: downloads has an invalid entry`);
-  return [...entries]
-    .sort((a, b) => a.day.localeCompare(b.day))
-    .map((entry) => entry.downloads);
+  if (!entries.every(isDownloadEntry))
+    throw new Error(`npm downloads for ${name}: downloads has an invalid entry`);
+  return entries.toSorted((a, b) => a.day.localeCompare(b.day)).map((entry) => entry.downloads);
 }
 
-export async function fetchRepoMeta(repo: string, token: string | undefined, fetchImpl: FetchImpl = fetch): Promise<RepoMeta> {
+export async function fetchRepoMeta(
+  repo: string,
+  token: string | undefined,
+  fetchImpl: FetchImpl = fetch,
+): Promise<RepoMeta> {
   const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
   if (token) headers.Authorization = `Bearer ${token}`;
   const response = await fetchImpl(`https://api.github.com/repos/paveg/${repo}`, { headers });
@@ -54,6 +67,7 @@ export async function fetchRepoMeta(repo: string, token: string | undefined, fet
   return {
     stars,
     language: typeof repoBody.language === 'string' ? repoBody.language : null,
-    license: typeof spdxId === 'string' && spdxId !== '' && spdxId !== 'NOASSERTION' ? spdxId : null,
+    license:
+      typeof spdxId === 'string' && spdxId !== '' && spdxId !== 'NOASSERTION' ? spdxId : null,
   };
 }

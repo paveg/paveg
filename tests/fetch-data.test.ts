@@ -29,7 +29,9 @@ test('loadPackages rejects a description of 49 characters or more', () => {
 });
 
 test('loadPackages reads config/packages.json', async () => {
-  const json = JSON.parse(await readFile(new URL('../config/packages.json', import.meta.url), 'utf8'));
+  const json = JSON.parse(
+    await readFile(new URL('../config/packages.json', import.meta.url), 'utf8'),
+  );
   const packages = loadPackages(json);
   assert.equal(packages.length, 5);
   assert.equal(packages[0]?.name, 'hono-problem-details');
@@ -82,13 +84,25 @@ test('fetchRepoMeta sends the token as a Bearer header', async () => {
 });
 
 test('fetchRepoMeta maps stars, language and license spdx id', async () => {
-  const { impl } = fakeFetch({ stargazers_count: 14, language: 'TypeScript', license: { spdx_id: 'MIT' } });
-  assert.deepEqual(await fetchRepoMeta('hono-idempotency', 't', impl), { stars: 14, language: 'TypeScript', license: 'MIT' });
+  const { impl } = fakeFetch({
+    stargazers_count: 14,
+    language: 'TypeScript',
+    license: { spdx_id: 'MIT' },
+  });
+  assert.deepEqual(await fetchRepoMeta('hono-idempotency', 't', impl), {
+    stars: 14,
+    language: 'TypeScript',
+    license: 'MIT',
+  });
 });
 
 test('fetchRepoMeta returns license null when the repo has none', async () => {
   const { impl } = fakeFetch({ stargazers_count: 0, language: null, license: null });
-  assert.deepEqual(await fetchRepoMeta('hono-dpop', 't', impl), { stars: 0, language: null, license: null });
+  assert.deepEqual(await fetchRepoMeta('hono-dpop', 't', impl), {
+    stars: 0,
+    language: null,
+    license: null,
+  });
 });
 
 test('fetchRepoMeta throws with the repo and status on non-2xx', async () => {
@@ -104,11 +118,19 @@ test('fetchRepoMeta throws naming the repo when stargazers_count is missing', as
 test('fetchRepoMeta rejects negative and non-integer stargazers_count', async () => {
   for (const stargazers_count of [-1, 1.5, '3', null]) {
     const { impl } = fakeFetch({ stargazers_count, language: null, license: null });
-    await assert.rejects(fetchRepoMeta('hono-dpop', 't', impl), /hono-dpop.*stargazers_count/, String(stargazers_count));
+    await assert.rejects(
+      fetchRepoMeta('hono-dpop', 't', impl),
+      /hono-dpop.*stargazers_count/,
+      String(stargazers_count),
+    );
   }
 });
 
 test('fetchRepoMeta maps NOASSERTION license to null', async () => {
-  const { impl } = fakeFetch({ stargazers_count: 2, language: 'TypeScript', license: { spdx_id: 'NOASSERTION' } });
+  const { impl } = fakeFetch({
+    stargazers_count: 2,
+    language: 'TypeScript',
+    license: { spdx_id: 'NOASSERTION' },
+  });
   assert.equal((await fetchRepoMeta('hono-dpop', 't', impl)).license, null);
 });

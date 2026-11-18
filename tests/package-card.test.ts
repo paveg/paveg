@@ -9,7 +9,10 @@ const card: PackageCard = {
   stars: 14,
   language: 'TypeScript',
   license: 'MIT',
-  downloads: [0, 0, 166, 218, 326, 404, 247, 392, 350, 442, 215, 286, 226, 313, 177, 327, 676, 516, 294, 87, 102, 205, 409, 185, 258, 180, 53, 26, 123, 114],
+  downloads: [
+    0, 0, 166, 218, 326, 404, 247, 392, 350, 442, 215, 286, 226, 313, 177, 327, 676, 516, 294, 87,
+    102, 205, 409, 185, 258, 180, 53, 26, 123, 114,
+  ],
 };
 
 function capture(text: string, pattern: RegExp): string {
@@ -23,7 +26,14 @@ const starXOf = (svg: string): number => Number(capture(svg, /<g transform="tran
 
 test('renders name, stars, language, license, label and language color', () => {
   const svg = renderPackageCard(card, 'light');
-  for (const expected of ['>hono-idempotency<', '>14<', '>TypeScript<', '>MIT<', 'downloads / 30 days', '#3178C6']) {
+  for (const expected of [
+    '>hono-idempotency<',
+    '>14<',
+    '>TypeScript<',
+    '>MIT<',
+    'downloads / 30 days',
+    '#3178C6',
+  ]) {
     assert.ok(svg.includes(expected), expected);
   }
 });
@@ -71,8 +81,9 @@ test('themes use their own paper color', () => {
   assert.ok(renderPackageCard(card, 'dark').includes('#14212F'));
 });
 
+const titleFor = (stars: number): string => titleOf(renderPackageCard({ ...card, stars }, 'light'));
+
 test('title uses the singular for exactly one star', () => {
-  const titleFor = (stars: number): string => titleOf(renderPackageCard({ ...card, stars }, 'light'));
   assert.ok(titleFor(1).includes('1 GitHub star,'), titleFor(1));
   assert.ok(!titleFor(1).includes('1 GitHub stars'), titleFor(1));
   assert.ok(titleFor(2).includes('2 GitHub stars,'), titleFor(2));
@@ -80,17 +91,26 @@ test('title uses the singular for exactly one star', () => {
 });
 
 test('longest description keeps footer items at their anchors and right-aligned text at the right padding', () => {
-  const svg = renderPackageCard({
-    ...card,
-    description: 'Country / ASN blocking and maintenance mode',
-    stars: 1234,
-    downloads: [...Array(29).fill(0), 73012],
-  }, 'light');
+  const svg = renderPackageCard(
+    {
+      ...card,
+      description: 'Country / ASN blocking and maintenance mode',
+      stars: 1234,
+      downloads: [...Array(29).fill(0), 73012],
+    },
+    'light',
+  );
   const rightEdge = CARD_WIDTH - CARD_PAD;
   assert.equal(rightEdge, 360);
   assert.ok(svg.includes('>Country / ASN blocking and maintenance mode<'));
   assert.ok(svg.includes('<text x="36" y="144" class="meta">TypeScript</text>'));
   assert.ok(svg.includes('<text x="122" y="144" class="meta">MIT</text>'));
-  assert.ok(svg.includes(`<text x="${rightEdge}" y="34" text-anchor="end" class="stars">1.2k</text>`));
-  assert.ok(svg.includes(`<text x="${rightEdge}" y="144" text-anchor="end" class="meta"><tspan class="value">73k</tspan> downloads / 30 days</text>`));
+  assert.ok(
+    svg.includes(`<text x="${rightEdge}" y="34" text-anchor="end" class="stars">1.2k</text>`),
+  );
+  assert.ok(
+    svg.includes(
+      `<text x="${rightEdge}" y="144" text-anchor="end" class="meta"><tspan class="value">73k</tspan> downloads / 30 days</text>`,
+    ),
+  );
 });
