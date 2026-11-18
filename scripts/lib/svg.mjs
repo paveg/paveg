@@ -7,4 +7,8 @@ export const FONT = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica N
 
 export const escapeXml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-export const compactNumber = (value) => (value >= 1000 ? `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}k` : String(value));
+export const compactNumber = (value) => {
+  if (value < 1000) return String(value);
+  const tenths = Math.round(value / 100);
+  return tenths >= 100 ? `${Math.round(value / 1000)}k` : `${(tenths / 10).toFixed(1)}k`;
+};

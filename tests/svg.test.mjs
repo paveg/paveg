@@ -7,6 +7,9 @@ test('compactNumber abbreviates thousands', () => {
   assert.equal(compactNumber(1000), '1.0k');
   assert.equal(compactNumber(7312), '7.3k');
   assert.equal(compactNumber(73012), '73k');
+  assert.equal(compactNumber(9949), '9.9k');
+  assert.equal(compactNumber(9950), '10k');
+  assert.equal(compactNumber(9999), '10k');
 });
 
 test('escapeXml escapes ampersand and angle brackets', () => {

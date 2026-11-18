@@ -49,6 +49,13 @@ test('star sits left of the compacted star count', () => {
   assert.ok(starX <= 420 - 20 - 4 * 8.5 - 21, String(starX));
 });
 
+test('star X follows the compacted text width for five-digit stars', () => {
+  const svg = renderPackageCard({ ...card, stars: 12345 }, 'light');
+  assert.ok(svg.includes('>12k<'));
+  const starX = Number(svg.match(/<g transform="translate\(([\d.]+) /)[1]);
+  assert.equal(starX, 420 - 20 - 3 * 8.5 - 21);
+});
+
 test('themes use their own paper color', () => {
   assert.ok(renderPackageCard(card, 'light').includes('#FBFCFD'));
   assert.ok(renderPackageCard(card, 'dark').includes('#14212F'));
