@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="380" height="164" viewBox="0 0 380 164" role="img" aria-labelledby="title">
-<title id="title">hono-problem-details: RFC 9457 problem+json error responses. 29 GitHub stars, 99566 npm downloads in the last 30 days, TypeScript, MIT license</title>
+<title id="title">hono-problem-details: RFC 9457 problem+json error responses. 29 GitHub stars, 100124 npm downloads in the last 30 days, TypeScript, MIT license</title>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #1C2733; }
   .name { font-size: 16px; font-weight: 700; fill: #2E6BD6; }
@@ -21,8 +21,8 @@
 <g transform="translate(322 21)"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" class="star"/></g>
 <text x="360" y="34" text-anchor="end" class="stars">29</text>
 <text x="20" y="56" class="description">RFC 9457 problem+json error responses</text>
-<path d="M20.0 111.9 L31.7 113.6 L43.4 114.6 L55.2 112.5 L66.9 109.4 L78.6 108.9 L90.3 110.0 L102.1 110.2 L113.8 111.6 L125.5 113.8 L137.2 112.4 L149.0 110.1 L160.7 106.3 L172.4 100.6 L184.1 104.3 L195.9 105.1 L207.6 109.4 L219.3 110.2 L231.0 110.6 L242.8 111.6 L254.5 93.7 L266.2 74.0 L277.9 95.4 L289.7 113.7 L301.4 113.1 L313.1 96.7 L324.8 79.7 L336.6 98.8 L348.3 101.8 L360.0 90.1 L360 116 L20 116 Z" class="area"/>
-<path d="M20.0 111.9 L31.7 113.6 L43.4 114.6 L55.2 112.5 L66.9 109.4 L78.6 108.9 L90.3 110.0 L102.1 110.2 L113.8 111.6 L125.5 113.8 L137.2 112.4 L149.0 110.1 L160.7 106.3 L172.4 100.6 L184.1 104.3 L195.9 105.1 L207.6 109.4 L219.3 110.2 L231.0 110.6 L242.8 111.6 L254.5 93.7 L266.2 74.0 L277.9 95.4 L289.7 113.7 L301.4 113.1 L313.1 96.7 L324.8 79.7 L336.6 98.8 L348.3 101.8 L360.0 90.1" class="line" pathLength="1"/>
+<path d="M20.0 113.6 L31.7 114.6 L43.4 112.5 L55.2 109.4 L66.9 108.9 L78.6 110.0 L90.3 110.2 L102.1 111.6 L113.8 113.8 L125.5 112.4 L137.2 110.1 L149.0 106.3 L160.7 100.6 L172.4 104.3 L184.1 105.1 L195.9 109.4 L207.6 110.2 L219.3 110.6 L231.0 111.6 L242.8 93.7 L254.5 74.0 L266.2 95.4 L277.9 113.7 L289.7 113.1 L301.4 96.7 L313.1 79.7 L324.8 98.8 L336.6 101.8 L348.3 90.1 L360.0 110.1 L360 116 L20 116 Z" class="area"/>
+<path d="M20.0 113.6 L31.7 114.6 L43.4 112.5 L55.2 109.4 L66.9 108.9 L78.6 110.0 L90.3 110.2 L102.1 111.6 L113.8 113.8 L125.5 112.4 L137.2 110.1 L149.0 106.3 L160.7 100.6 L172.4 104.3 L184.1 105.1 L195.9 109.4 L207.6 110.2 L219.3 110.6 L231.0 111.6 L242.8 93.7 L254.5 74.0 L266.2 95.4 L277.9 113.7 L289.7 113.1 L301.4 96.7 L313.1 79.7 L324.8 98.8 L336.6 101.8 L348.3 90.1 L360.0 110.1" class="line" pathLength="1"/>
 <line x1="20" y1="116" x2="360" y2="116" class="rule"/>
 <circle cx="25" cy="140" r="5" fill="#3178C6"/>
 <text x="36" y="144" class="meta">TypeScript</text>
