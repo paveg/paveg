@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="380" height="164" viewBox="0 0 380 164" role="img" aria-labelledby="title">
-<title id="title">hono-idempotency: Stripe-style Idempotency-Key middleware. 14 GitHub stars, 7995 npm downloads in the last 30 days, TypeScript, MIT license</title>
+<title id="title">hono-idempotency: Stripe-style Idempotency-Key middleware. 14 GitHub stars, 7796 npm downloads in the last 30 days, TypeScript, MIT license</title>
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #E6ECF2; }
   .name { font-size: 16px; font-weight: 700; fill: #6FA0F2; }
@@ -21,11 +21,11 @@
 <g transform="translate(322 21)"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" class="star"/></g>
 <text x="360" y="34" text-anchor="end" class="stars">14</text>
 <text x="20" y="56" class="description">Stripe-style Idempotency-Key middleware</text>
-<path d="M20.0 91.6 L31.7 94.3 L43.4 88.5 L55.2 102.6 L66.9 98.2 L78.6 102.0 L90.3 96.6 L102.1 105.0 L113.8 95.7 L125.5 74.0 L137.2 83.9 L149.0 97.7 L160.7 110.6 L172.4 109.7 L184.1 103.3 L195.9 90.6 L207.6 104.5 L219.3 100.0 L231.0 104.8 L242.8 112.7 L254.5 114.4 L266.2 108.4 L277.9 108.9 L289.7 96.5 L301.4 85.2 L313.1 104.1 L324.8 105.7 L336.6 106.1 L348.3 95.6 L360.0 92.0 L360 116 L20 116 Z" class="area"/>
-<path d="M20.0 91.6 L31.7 94.3 L43.4 88.5 L55.2 102.6 L66.9 98.2 L78.6 102.0 L90.3 96.6 L102.1 105.0 L113.8 95.7 L125.5 74.0 L137.2 83.9 L149.0 97.7 L160.7 110.6 L172.4 109.7 L184.1 103.3 L195.9 90.6 L207.6 104.5 L219.3 100.0 L231.0 104.8 L242.8 112.7 L254.5 114.4 L266.2 108.4 L277.9 108.9 L289.7 96.5 L301.4 85.2 L313.1 104.1 L324.8 105.7 L336.6 106.1 L348.3 95.6 L360.0 92.0" class="line" pathLength="1"/>
+<path d="M20.0 94.3 L31.7 88.5 L43.4 102.6 L55.2 98.2 L66.9 102.0 L78.6 96.6 L90.3 105.0 L102.1 95.7 L113.8 74.0 L125.5 83.9 L137.2 97.7 L149.0 110.6 L160.7 109.7 L172.4 103.3 L184.1 90.6 L195.9 104.5 L207.6 100.0 L219.3 104.8 L231.0 112.7 L242.8 114.4 L254.5 108.4 L266.2 108.9 L277.9 96.5 L289.7 85.2 L301.4 104.1 L313.1 105.7 L324.8 106.1 L336.6 95.6 L348.3 92.0 L360.0 104.0 L360 116 L20 116 Z" class="area"/>
+<path d="M20.0 94.3 L31.7 88.5 L43.4 102.6 L55.2 98.2 L66.9 102.0 L78.6 96.6 L90.3 105.0 L102.1 95.7 L113.8 74.0 L125.5 83.9 L137.2 97.7 L149.0 110.6 L160.7 109.7 L172.4 103.3 L184.1 90.6 L195.9 104.5 L207.6 100.0 L219.3 104.8 L231.0 112.7 L242.8 114.4 L254.5 108.4 L266.2 108.9 L277.9 96.5 L289.7 85.2 L301.4 104.1 L313.1 105.7 L324.8 106.1 L336.6 95.6 L348.3 92.0 L360.0 104.0" class="line" pathLength="1"/>
 <line x1="20" y1="116" x2="360" y2="116" class="rule"/>
 <circle cx="25" cy="140" r="5" fill="#3178C6"/>
 <text x="36" y="144" class="meta">TypeScript</text>
 <text x="122" y="144" class="meta">MIT</text>
-<text x="360" y="144" text-anchor="end" class="meta"><tspan class="value">8.0k</tspan> downloads / 30 days</text>
+<text x="360" y="144" text-anchor="end" class="meta"><tspan class="value">7.8k</tspan> downloads / 30 days</text>
 </svg>
